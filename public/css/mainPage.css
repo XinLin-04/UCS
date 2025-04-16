@@ -346,3 +346,126 @@ h2 {
         margin: 20% auto;
     }
 }
+
+/* Login/Register area */
+.login-register {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: 100%;
+}
+
+.login-btn, .register-btn {
+    display: block;
+    padding: 8px 15px;
+    background-color: #4682b4;
+    color: white;
+    text-align: center;
+    border-radius: 5px;
+    text-decoration: none;
+    font-weight: bold;
+    transition: background-color 0.3s;
+}
+
+.register-btn {
+    background-color: #5cb85c;
+}
+
+.login-btn:hover {
+    background-color: #3a6d96;
+}
+
+.register-btn:hover {
+    background-color: #4cae4c;
+}
+
+/* Post items styling */
+.discussion-post {
+    position: relative;
+    padding-bottom: 40px; /* Space for post meta info */
+}
+
+.discussion-post h3 {
+    margin-top: 0;
+    margin-bottom: 10px;
+    font-size: 18px;
+}
+
+.post-content {
+    margin-bottom: 15px;
+    font-size: 14px;
+}
+
+.post-meta {
+    position: absolute;
+    bottom: 10px;
+    left: 20px;
+    font-size: 12px;
+    color: #666;
+    display: flex;
+    justify-content: space-between;
+    width: calc(100% - 40px);
+}
+
+.post-actions {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    display: flex;
+    gap: 5px;
+}
+
+.edit-post, .delete-post {
+    padding: 3px 8px;
+    font-size: 12px;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+}
+
+.edit-post {
+    background-color: #f0ad4e;
+    color: white;
+}
+
+.delete-post {
+    background-color: #d9534f;
+    color: white;
+}
+
+.admin-note {
+    background-color: #f8f9fa;
+    padding: 10px;
+    border-radius: 5px;
+    margin-top: 15px;
+}
+
+/* Error/success messages */
+.alert {
+    padding: 10px 15px;
+    margin-bottom: 15px;
+    border-radius: 5px;
+}
+
+.alert-success {
+    background-color: #dff0d8;
+    color: #3c763d;
+    border: 1px solid #d6e9c6;
+}
+
+.alert-danger {
+    background-color: #f2dede;
+    color: #a94442;
+    border: 1px solid #ebccd1;
+}
+
+.no-posts, .error-message, .loading-posts {
+    padding: 10px;
+    text-align: center;
+    font-style: italic;
+    color: #666;
+}
+
+.error-message {
+    color: #a94442;
+}

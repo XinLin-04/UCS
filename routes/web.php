@@ -14,19 +14,14 @@ use App\Http\Controllers\ComplaintController;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', [ComplaintController::class, 'index']);
 
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
-Route::get('/mainPage', function(){
-    return view('mainPage');
-});
-
-// Complaint routes
-Route::post('/complaints', [ComplaintController::class, 'store'])->name('complaints.store');
+// Complaint routes with appropriate middleware
+Route::post('/complaints', [ComplaintController::class, 'store'])->middleware('auth')->name('complaints.store');
 Route::get('/complaints', [ComplaintController::class, 'index'])->name('complaints.index');
-Route::get('/complaints/create', [ComplaintController::class, 'create'])->name('complaints.create');
+Route::put('/complaints/{complaint}', [ComplaintController::class, 'update'])->middleware('auth')->name('complaints.update');
+Route::delete('/complaints/{complaint}', [ComplaintController::class, 'destroy'])->middleware('auth')->name('complaints.destroy');
