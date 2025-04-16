@@ -1,6 +1,9 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\CommentController;
+use App\Http\Controllers\ComplaintController;
 
 /*
 |--------------------------------------------------------------------------
@@ -17,6 +20,11 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Auth::routes();
+//Open the homepage
+Route::get('home', [HomeController::class, 'index']);
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+// Test for Gate unitl here fuckdup
+// Route::get('/posts/create', [CommentController::class, 'create']);
+// Route::get('/posts/edit', [CommentController::class, 'edit']);
+// Route::get('/posts/delete', [CommentController::class, 'delete']);
