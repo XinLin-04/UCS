@@ -17,7 +17,7 @@ class CreateComplaintsTable extends Migration
             $table->id();
             $table->string('title');
             $table->text('content');
-            $table->timestamp('created_at')->useCurrent();
+            $table->timestamps();
             $table->foreignId('user_id');
         });
     }
