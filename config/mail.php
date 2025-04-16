@@ -91,10 +91,12 @@ return [
     |
     */
 
+    //this will be used as the default sender address for all emails sent by the application
     'from' => [
-        'address' => env('MAIL_FROM_ADDRESS', 'hello@example.com'),
-        'name' => env('MAIL_FROM_NAME', 'Example'),
+        'address' => env('MAIL_FROM_ADDRESS', 'noreply@1utar.my'),
+        'name' => env('MAIL_FROM_NAME', env('APP_NAME', 'Laravel')),
     ],
+
 
     /*
     |--------------------------------------------------------------------------
