@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>UTAR Complainsion</title>
     <link rel="stylesheet" href="{{ ('css/mainPage.css') }}">
-    <
 </head>
 <body>
     <!-- Header - Full Width -->
@@ -30,7 +30,7 @@
                 <div class="username">Lee Wei Sen</div>
             </div>
             
-            <div class="new-post">
+            <div class="new-post" id="open-complaint-form">
                 <div class="icon">➕</div>
                 <div class="text">New Post</div>
             </div>
@@ -72,5 +72,64 @@
             </div>
         </div>
     </div>
+
+    <!-- Complaint Form Modal -->
+    <div id="complaint-modal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Create New Complaint</h2>
+            
+            <form id="complaint-form" method="POST" action="{{ route('complaints.store') }}">
+                @csrf
+                <div class="form-group">
+                    <label for="title">Title</label>
+                    <input type="text" id="title" name="title" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="content">Content</label>
+                    <textarea id="content" name="content" rows="6" required></textarea>
+                </div>
+                
+                <div class="form-actions">
+                    <button type="button" id="cancel-complaint">Cancel</button>
+                    <button type="submit">Submit Complaint</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="{{ mix('js/app.js') }}"></script>
+    <script>
+        // Modal functionality with vanilla JavaScript
+        document.addEventListener('DOMContentLoaded', function() {
+            const modal = document.getElementById('complaint-modal');
+            const openButton = document.getElementById('open-complaint-form');
+            const closeButton = document.querySelector('.close');
+            const cancelButton = document.getElementById('cancel-complaint');
+            
+            // Open modal
+            openButton.addEventListener('click', function() {
+                modal.style.display = 'block';
+            });
+            
+            // Close modal with X button
+            closeButton.addEventListener('click', function() {
+                modal.style.display = 'none';
+            });
+            
+            // Close modal with Cancel button
+            cancelButton.addEventListener('click', function() {
+                modal.style.display = 'none';
+            });
+            
+            // Close when clicking outside the modal
+            window.addEventListener('click', function(event) {
+                if (event.target === modal) {
+                    modal.style.display = 'none';
+                }
+            });
+        });
+    </script>
 </body>
 </html>
