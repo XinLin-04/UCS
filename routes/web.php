@@ -25,28 +25,18 @@ Route::middleware(['auth', 'verified'])->group(function () {
     // Verified-only routes here
 });
 
-Route::get('/homeTest', function () {
-    return view('homeTest');  // This will load the homeTest.blade.php view
-});
+// Route::get('/home', function () {
+//     return view('mainPage'); 
+// });
 
 // Define the search route
 Route::get('/search', [SearchController::class, 'index'])->name('search');
 
 Auth::routes(['verify' => true]);
 
-Route::middleware(['auth', 'verified'])->group(function () {
-    // Verified-only routes here
-});
-
-Route::get('/homeTest', function () {
-    return view('homeTest');  // This will load the homeTest.blade.php view
-});
-
 Route::get('/', [ComplaintController::class, 'index']);
-
-Auth::routes();
-
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::get('/home', [ComplaintController::class, 'index']);
+// Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home'); //default home route by framework
 
 // Complaint routes with appropriate middleware
 Route::post('/complaints', [ComplaintController::class, 'store'])->middleware('auth')->name('complaints.store');
