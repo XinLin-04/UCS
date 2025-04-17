@@ -22,6 +22,7 @@ class CreateUsersTable extends Migration
             $table->rememberToken(); //for remember me functionality, cookie based authentication
             $table->timestamps(); //created_at and updated_at timestamps
             $table->timestamp('email_verified_at')->nullable(); // Email verification timestamp
+            $table->string('profile_picture')->nullable(); // Profile picture URL
         });
     }
 
