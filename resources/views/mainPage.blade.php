@@ -27,7 +27,7 @@
             <div class="user-profile">
                 @auth
                     <div class="avatar"></div>
-                    <div class="username">{{ Auth::user()->name }}</div>
+                    <div class="username" data-user-id="{{ Auth::id() }}" data-role="{{ Auth::user()->role }}">{{ Auth::user()->name }}</div>
                 @else
                     <div class="login-register">
                         <a href="{{ route('login') }}" class="login-btn">Login</a>
@@ -68,27 +68,29 @@
         <div class="content">
             <div class="content-header">
                 <div class="section-title">Recent Top Discussion</div>
-                <button class="filter-button">⇅</button>
+                <button class="filter-button" id="filter-toggle">⇅</button>
+                
+                <!-- Filter Dropdown -->
+                <div class="filter-dropdown" id="filter-dropdown">
+                    <ul>
+                        <li data-filter="recent" class="active">Latest Discussion</li>
+                        <li data-filter="week">Top Discussion This Week</li>
+                        <li data-filter="month">Top Discussion This Month</li>
+                        <li data-filter="comments">Most Comments</li>
+                    </ul>
+                </div>
             </div>
             
             <div class="posts-grid" id="all-posts">
                 @foreach($complaints as $complaint)
                 <div class="discussion-post" data-id="{{ $complaint->id }}">
                     <h3>{{ $complaint->title }}</h3>
-                    <p class="post-content">{{ $complaint->content }}</p>
+                    <p class="post-content">{{ Str::limit($complaint->content, 150) }}</p>
                     <div class="post-meta">
                         <span class="post-author">By: {{ $complaint->user->name }}</span>
                         <span class="post-date">{{ $complaint->created_at->diffForHumans() }}</span>
+                        <span class="comments-count">Comments: {{ $complaint->comments_count ?? 0 }}</span>
                     </div>
-                    
-                    @auth
-                        @if(Auth::id() == $complaint->user_id || Auth::user()->role == 'admin')
-                            <div class="post-actions">
-                                <button class="edit-post" data-id="{{ $complaint->id }}">Edit</button>
-                                <button class="delete-post" data-id="{{ $complaint->id }}">Delete</button>
-                            </div>
-                        @endif
-                    @endauth
                 </div>
                 @endforeach
             </div>
@@ -118,6 +120,54 @@
                     <button type="submit">Submit Complaint</button>
                 </div>
             </form>
+        </div>
+    </div>
+
+    <!-- Complaint Detail Modal -->
+    <div id="detail-modal" class="modal">
+        <div class="modal-content detail-content">
+            <span class="close detail-close">&times;</span>
+            <div id="complaint-detail-container">
+                <h2 id="detail-title"></h2>
+                
+                <div class="detail-meta">
+                    <span class="detail-author">By: <span id="detail-author-name"></span></span>
+                    <span class="detail-date" id="detail-date"></span>
+                </div>
+                
+                <div class="detail-content-text" id="detail-content"></div>
+                
+                @auth
+                <div id="detail-actions" class="detail-actions">
+                    <button id="detail-edit-btn" class="edit-post">Edit</button>
+                    <button id="detail-delete-btn" class="delete-post">Delete</button>
+                </div>
+                @endauth
+                
+                <div class="comments-section">
+                    <h3>Comments</h3>
+                    <div id="comments-container"></div>
+                    
+                    @auth
+                    <div class="comment-form">
+                        <h4>Add a Comment</h4>
+                        <form id="comment-form">
+                            <input type="hidden" id="complaint-id" name="complaint_id">
+                            <div class="form-group">
+                                <textarea id="comment-content" name="content" rows="3" required></textarea>
+                            </div>
+                            <div class="form-actions">
+                                <button type="submit">Post Comment</button>
+                            </div>
+                        </form>
+                    </div>
+                    @else
+                    <div class="login-to-comment">
+                        <p>Please <a href="{{ route('login') }}">login</a> to comment</p>
+                    </div>
+                    @endauth
+                </div>
+            </div>
         </div>
     </div>
 
@@ -189,119 +239,7 @@
     </div>
 
     <script src="{{ asset('js/app.js') }}"></script>
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            // Modal functionality
-            const complaintModal = document.getElementById('complaint-modal');
-            const editModal = document.getElementById('edit-modal');
-            const deleteModal = document.getElementById('delete-modal');
-            
-            const openButton = document.getElementById('open-complaint-form');
-            const closeButtons = document.querySelectorAll('.close');
-            const cancelButtons = document.querySelectorAll('[id^="cancel-"]');
-            
-            // Open new complaint modal
-            if (openButton) {
-                openButton.addEventListener('click', function() {
-                    complaintModal.style.display = 'block';
-                });
-            }
-            
-            // Close modals with X button
-            closeButtons.forEach(button => {
-                button.addEventListener('click', function() {
-                    complaintModal.style.display = 'none';
-                    editModal.style.display = 'none';
-                    deleteModal.style.display = 'none';
-                });
-            });
-            
-            // Close modals with Cancel button
-            cancelButtons.forEach(button => {
-                button.addEventListener('click', function() {
-                    complaintModal.style.display = 'none';
-                    editModal.style.display = 'none';
-                    deleteModal.style.display = 'none';
-                });
-            });
-            
-            // Close when clicking outside the modal
-            window.addEventListener('click', function(event) {
-                if (event.target === complaintModal) {
-                    complaintModal.style.display = 'none';
-                }
-                if (event.target === editModal) {
-                    editModal.style.display = 'none';
-                }
-                if (event.target === deleteModal) {
-                    deleteModal.style.display = 'none';
-                }
-            });
-            
-            // Edit buttons functionality
-            const editButtons = document.querySelectorAll('.edit-post');
-            editButtons.forEach(button => {
-                button.addEventListener('click', function() {
-                    const postId = this.getAttribute('data-id');
-                    const postTitle = this.closest('.discussion-post').querySelector('h3').textContent;
-                    const postContent = this.closest('.discussion-post').querySelector('.post-content').textContent;
-                    
-                    document.getElementById('edit-title').value = postTitle;
-                    document.getElementById('edit-content').value = postContent;
-                    document.getElementById('edit-form').action = `/complaints/${postId}`;
-                    
-                    editModal.style.display = 'block';
-                });
-            });
-            
-            // Delete buttons functionality
-            const deleteButtons = document.querySelectorAll('.delete-post');
-            deleteButtons.forEach(button => {
-                button.addEventListener('click', function() {
-                    const postId = this.getAttribute('data-id');
-                    document.getElementById('delete-form').action = `/complaints/${postId}`;
-                    deleteModal.style.display = 'block';
-                });
-            });
-            
-            // Load user posts via AJAX for authenticated users
-            @auth
-            const userPostsContainer = document.getElementById('user-posts');
-            
-            fetch('/api/user/complaints', {
-                headers: {
-                    'Accept': 'application/json',
-                    'X-Requested-With': 'XMLHttpRequest',
-                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-                },
-                credentials: 'same-origin'
-            })
-            .then(response => response.json())
-            .then(data => {
-                userPostsContainer.innerHTML = '';
-                
-                if (data.length === 0) {
-                    userPostsContainer.innerHTML = '<div class="no-posts">You have no posts yet.</div>';
-                    return;
-                }
-                
-                data.forEach(post => {
-                    const postElement = document.createElement('div');
-                    postElement.className = 'post-item';
-                    postElement.innerHTML = `
-                        <h4>${post.title}</h4>
-                        <div class="post-date">${new Date(post.created_at).toLocaleDateString()}</div>
-                    `;
-                    userPostsContainer.appendChild(postElement);
-                });
-            })
-            .catch(error => {
-                console.error('Error fetching user posts:', error);
-                userPostsContainer.innerHTML = '<div class="error-message">Failed to load posts.</div>';
-            });
-            @endauth
-        });
-    </script>
+    <script src="{{ asset('js/complaint.js') }}"></script>
 </body>
 </html>
 
