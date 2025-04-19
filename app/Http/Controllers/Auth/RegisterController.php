@@ -8,6 +8,7 @@ use App\Models\User;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Http\Request;
 
 class RegisterController extends Controller
 {
@@ -69,5 +70,26 @@ class RegisterController extends Controller
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
         ]);
+    }
+
+    /**
+     * Handle a registration request for the application.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function register(Request $request)
+    {
+        // Validate the request
+        $this->validator($request->all())->validate();
+
+        // Create the user but do not log them in
+        $user = $this->create($request->all());
+
+        // Send the email verification notification
+        $user->sendEmailVerificationNotification();
+
+        // Redirect to the email verification notice page
+        return redirect('/login')->with('success', 'Your account has been created. Please verify your email.');
     }
 }

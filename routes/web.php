@@ -16,28 +16,28 @@ use App\Http\Controllers\ComplaintController;
 | contains the "web" middleware group. Now create something great!
 |
 */
+Route::post('/email/resend-unverified', [App\Http\Controllers\Auth\VerificationController::class, 'resendForUnverifiedUser'])
+    ->name('verification.resend.unverified');
 
 // Define the search route
 Route::get('/search', [SearchController::class, 'index'])->name('search');
 
 Auth::routes(['verify' => true]);
 
-Route::middleware(['auth', 'verified'])->group(function () {
-    // Verified-only routes here
-});
+Route::get('/', [App\Http\Controllers\ComplaintController::class, 'index'])
+    ->name('mainPage');
 
-Route::get('/homeTest', function () {
-    return view('homeTest');  // This will load the homeTest.blade.php view
-});
-
-Route::get('/', [ComplaintController::class, 'index']);
-
-Auth::routes();
-
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+// Route::middleware(['auth', 'verified'])->group(function () {
+//     // Verified-only routes here
+// });
 
 // Complaint routes with appropriate middleware
-Route::post('/complaints', [ComplaintController::class, 'store'])->middleware('auth')->name('complaints.store');
+// Route::post('/complaints', [ComplaintController::class, 'store'])->middleware('auth')->name('complaints.store');
+// Route::get('/complaints', [ComplaintController::class, 'index'])->name('complaints.index');
+// Route::put('/complaints/{complaint}', [ComplaintController::class, 'update'])->middleware('auth')->name('complaints.update');
+// Route::delete('/complaints/{complaint}', [ComplaintController::class, 'destroy'])->middleware('auth')->name('complaints.destroy');
+
+Route::post('/complaints', [ComplaintController::class, 'store'])->name('complaints.store');
 Route::get('/complaints', [ComplaintController::class, 'index'])->name('complaints.index');
-Route::put('/complaints/{complaint}', [ComplaintController::class, 'update'])->middleware('auth')->name('complaints.update');
-Route::delete('/complaints/{complaint}', [ComplaintController::class, 'destroy'])->middleware('auth')->name('complaints.destroy');
+Route::put('/complaints/{complaint}', [ComplaintController::class, 'update'])->name('complaints.update');
+Route::delete('/complaints/{complaint}', [ComplaintController::class, 'destroy'])->name('complaints.destroy');

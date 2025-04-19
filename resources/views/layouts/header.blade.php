@@ -3,9 +3,8 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-
-    <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
+    <title>UTAR Complainsion</title>
 
     <title>{{ config('app.name', 'Laravel') }}</title>
 
@@ -18,7 +17,21 @@
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/mainPage.css')}}" rel="stylesheet">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+
 </head>
+    {{-- <!-- Header - Full Width -->
+    <header class="header">
+        <div class="logo-container">
+            <div class="logo">u</div>
+            <div class="site-title">UTAR Complainsion</div>
+        </div>
+        <div class="search-bar">
+            <div class="search-icon">🔍</div>
+            <input type="text" class="search-input">
+        </div>
+    </header> --}}
 <body>
     <div id="app">
         <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
@@ -51,41 +64,27 @@
                                     <a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a>
                                 </li>
                             @endif
-                        @else
+                        @endguest
+                        
                         <!-- Show Search Icon after login -->
                         @auth
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ route('search') }}">
-                                <i class="fa fa-search"></i> <!-- Replace with actual search icon or form -->
-                            </a>
-                        </li>
-    
-                        <!-- Dropdown Menu for Logout -->
-                            <li class="nav-item dropdown">
-                                <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                                    {{ Auth::user()->name }}
-                                </a>
-
-                                <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                                    <a class="dropdown-item" href="{{ route('logout') }}"
-                                       onclick="event.preventDefault();
-                                                     document.getElementById('logout-form').submit();">
-                                        {{ __('Logout') }}
-                                    </a>
-
-                                    <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
-                                        @csrf
-                                    </form>
+                        <div class="searchContainer">
+                            <form action="" class="search" id="search-bar">
+                                <input type="search" placeholder="Enter to Search" class="search__input" id="search">
+                                <div class="search__button" id="search-button">
+                                    <i class='bx bx-search'></i>
+                                    <i class='bx bx-x'></i>
                                 </div>
-                            </li>
-                            @endauth
-                        @endguest
+                            </form>
+                            <div id="search_result"></div> <!-- Moved outside the form -->
+                        </div>
+                        @endauth
                     </ul>
                 </div>
             </div>
         </nav>
 
-        <main class="py-4">
+        <main>
             @yield('content')
         </main>
     </div>
