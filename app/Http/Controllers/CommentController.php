@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Comment;
+use Illuminate\Support\Facades\Gate;
 
 class CommentController extends Controller
 {
@@ -28,11 +30,13 @@ class CommentController extends Controller
     //Gate
     public function create()
     {
-        if (Gate::allows('isUser')) {
-            dd('Create successfully!');
-        } else {
-            dd('Create fail!');
-        }
+        
+
+        // if (Gate::allows('isUser')) {
+        //     dd('Create successfully!');
+        // } else {
+        //     dd('Create fail!');
+        // }
 
     }
     public function edit()

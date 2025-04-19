@@ -27,22 +27,39 @@ class ComplaintController extends Controller
     }
 
     //Gate
-    public function create()
+    public function create(Request $request)
     {
-        if (Gate::allows('isUser')) {
-            dd('Create successfully!');
-        } else {
-            dd('Create fail!');
-        }
+        // Validate the request data
+        $request->validate([
+            'title' => 'required|string|max:255',
+            'description' => 'required|string',
+        ]);
+
+        
+        $complaint = Complaint::create([
+            'title' => $request->input('title'),
+            'description' => $request->input('description'),
+            'user_id' => auth()->id()
+        ]);
+        
+        // // Create a new complaint instance and save it to the database
+        $complaint = new Complaint();
+        
+        // if (Gate::allows('isUser')) {
+        //     dd('Create successfully!');
+        // } else {
+        //     dd('Create fail!');
+        // }
 
     }
     public function edit()
     {
-        if (Gate::allows('isUser')) {
-            dd('Update successfully!');
-        } else {
-            dd('Update fail!');
-        }
+        
+        // if (Gate::allows('isUser')) {
+        //     dd('Update successfully!');
+        // } else {
+        //     dd('Update fail!');
+        // }
     }
     public function delete()
     {
