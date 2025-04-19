@@ -18,7 +18,7 @@ class CommentController extends Controller
             ->with('user')
             ->latest()
             ->get();
-            
+
         return response()->json($comments);
     }
 
@@ -27,6 +27,8 @@ class CommentController extends Controller
      */
     public function storeApi(Request $request, Complaint $complaint)
     {
+        $this->authorize('create', Comment::class);
+
         $request->validate([
             'content' => 'required|string'
         ]);
@@ -39,12 +41,14 @@ class CommentController extends Controller
 
         return response()->json($comment->load('user'), 201);
     }
-    
+
     /**
      * Store a newly created comment (form submission).
      */
     public function store(Request $request)
     {
+        $this->authorize('create', Comment::class);
+
         $request->validate([
             'complaint_id' => 'required|exists:complaints,id',
             'content' => 'required|string'
@@ -65,29 +69,21 @@ class CommentController extends Controller
      */
     public function update(Request $request, Comment $comment)
     {
+        $this->authorize('update', $comment);
+
         $request->validate([
             'content' => 'required|string'
         ]);
 
-        // Check if user is authorized
-        if (Auth::user()->role === 'admin' || Auth::id() === $comment->user_id) {
-            $comment->content = $request->content;
-            $comment->save();
-            
-            if ($request->expectsJson()) {
-                return response()->json($comment);
-            }
-            
-            return redirect()->route('complaints.show', $comment->complaint_id)
-                ->with('success', 'Comment updated successfully.');
-        }
-        
+        $comment->content = $request->content;
+        $comment->save();
+
         if ($request->expectsJson()) {
-            return response()->json(['error' => 'Unauthorized'], 403);
+            return response()->json($comment);
         }
-        
+
         return redirect()->route('complaints.show', $comment->complaint_id)
-            ->with('error', 'You are not authorized to update this comment.');
+            ->with('success', 'Comment updated successfully.');
     }
 
     /**
@@ -95,24 +91,16 @@ class CommentController extends Controller
      */
     public function destroy(Comment $comment)
     {
-        // Check if user is authorized
-        if (Auth::user()->role === 'admin' || Auth::id() === $comment->user_id) {
-            $complaintId = $comment->complaint_id;
-            $comment->delete();
-            
-            if (request()->expectsJson()) {
-                return response()->json(['message' => 'Comment deleted successfully']);
-            }
-            
-            return redirect()->route('complaints.show', $complaintId)
-                ->with('success', 'Comment deleted successfully.');
-        }
-        
+        $this->authorize('delete', $comment);
+
+        $complaintId = $comment->complaint_id;
+        $comment->delete();
+
         if (request()->expectsJson()) {
-            return response()->json(['error' => 'Unauthorized'], 403);
+            return response()->json(['message' => 'Comment deleted successfully']);
         }
-        
-        return redirect()->route('complaints.show', $comment->complaint_id)
-            ->with('error', 'You are not authorized to delete this comment.');
+
+        return redirect()->route('complaints.show', $complaintId)
+            ->with('success', 'Comment deleted successfully.');
     }
 }

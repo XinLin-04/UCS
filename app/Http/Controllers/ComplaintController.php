@@ -21,70 +21,71 @@ class ComplaintController extends Controller
             ->withCount('comments')
             ->latest()
             ->get();
-            
+
         return view('mainPage', compact('complaints'));
     }
-    
+
     /**
      * Display the specified complaint.
      */
     public function show(Complaint $complaint)
     {
-        // Load the complaint with its relationships
+        $this->authorize('view', $complaint);
+
         $complaint->load('user');
-        
-        // Get comments for this complaint
         $comments = $complaint->comments()
             ->with('user')
             ->latest()
             ->get();
-            
+
         return view('complaintDetail', compact('complaint', 'comments'));
     }
-    
+
     /**
-     * Get filtered complaints for API
+     * Get filtered complaints for API.
      */
     public function getFiltered(Request $request)
     {
         $filter = $request->query('filter', 'recent');
         $query = Complaint::with('user')->withCount('comments');
-        
+
         switch ($filter) {
             case 'recent':
                 $query->latest();
                 break;
-                
+
             case 'week':
                 $weekStart = Carbon::now()->subWeek();
                 $query->where('created_at', '>=', $weekStart)
                       ->orderByDesc(DB::raw('comments_count'));
                 break;
-                
+
             case 'month':
                 $monthStart = Carbon::now()->subMonth();
                 $query->where('created_at', '>=', $monthStart)
                       ->orderByDesc(DB::raw('comments_count'));
                 break;
-                
+
             case 'comments':
                 $query->orderByDesc(DB::raw('comments_count'));
                 break;
-                
+
             default:
                 $query->latest();
         }
-        
+
         $complaints = $query->get();
-        
+
         return response()->json($complaints);
     }
-    
+
     /**
-     * Get a specific complaint details for API
+     * Get a specific complaint details for API.
      */
     public function getComplaint(Complaint $complaint)
     {
+        $this->authorize('view', $complaint);
+
         $complaint->load('user');
         return response()->json($complaint);
     }
@@ -94,6 +95,8 @@ class ComplaintController extends Controller
      */
     public function store(Request $request)
     {
+        $this->authorize('create', Complaint::class);
+
         $request->validate([
             'title' => 'required|string|max:255',
             'content' => 'required|string'
@@ -114,31 +117,25 @@ class ComplaintController extends Controller
      */
     public function update(Request $request, Complaint $complaint)
     {
+        $this->authorize('update', $complaint);
+
         $request->validate([
             'title' => 'required|string|max:255',
             'content' => 'required|string',
             'admin_note' => 'required_if:user_role,admin|string'
         ]);
 
-        // Check if user is authorized
-        if (Auth::user()->role === 'admin' || Auth::id() === $complaint->user_id) {
-            $complaint->title = $request->title;
-            $complaint->content = $request->content;
-            
-            // If admin is updating, save explanation note
-            if (Auth::user()->role === 'admin') {
-                // Create notification for the user with the admin note
-                $complaint->user->notify(new ComplaintUpdated($complaint, $request->admin_note));
-            }
-            
-            $complaint->save();
-            
-            return redirect()->route('complaints.show', $complaint)
-                ->with('success', 'Complaint updated successfully.');
+        $complaint->title = $request->title;
+        $complaint->content = $request->content;
+
+        if (Auth::user()->role === 'admin') {
+            $complaint->user->notify(new ComplaintUpdated($complaint, $request->admin_note));
         }
-        
+
+        $complaint->save();
+
         return redirect()->route('complaints.show', $complaint)
-            ->with('error', 'You are not authorized to update this complaint.');
+            ->with('success', 'Complaint updated successfully.');
     }
 
     /**
@@ -146,26 +143,20 @@ class ComplaintController extends Controller
      */
     public function destroy(Request $request, Complaint $complaint)
     {
+        $this->authorize('delete', $complaint);
+
         $request->validate([
             'admin_note' => 'required_if:user_role,admin|string'
         ]);
 
-        // Check if user is authorized
-        if (Auth::user()->role === 'admin' || Auth::id() === $complaint->user_id) {
-            // If admin is deleting, save explanation note
-            if (Auth::user()->role === 'admin') {
-                // Create notification for the user with the admin note
-                $complaint->user->notify(new ComplaintDeleted($request->admin_note));
-            }
-            
-            $complaint->delete();
-            
-            return redirect()->route('complaints.index')
-                ->with('success', 'Complaint deleted successfully.');
+        if (Auth::user()->role === 'admin') {
+            $complaint->user->notify(new ComplaintDeleted($request->admin_note));
         }
-        
-        return redirect()->route('complaints.show', $complaint)
-            ->with('error', 'You are not authorized to delete this complaint.');
+
+        $complaint->delete();
+
+        return redirect()->route('complaints.index')
+            ->with('success', 'Complaint deleted successfully.');
     }
 
     /**
