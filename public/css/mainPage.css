@@ -83,14 +83,14 @@ body {
 
 /* Sidebar */
 .sidebar {
-    width: 25%;
-    background-color: #808080;
-    color: black;
-    padding: 20px;
-    border-right: 1px solid #ccc;
-    position: relative;
-    height: calc(100vh - 70px);
+    width: 20%;
+    max-height: 100vh; /* Full viewport height */
+    overflow-y: auto; /* Enable vertical scrolling */
+    padding: 15px;
+    background-color: #f9f9f9;
+    border-right: 1px solid #ddd;
 }
+
 
 .user-profile {
     display: flex;
@@ -241,7 +241,7 @@ body {
 
 .posts-grid {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 15px;
     padding-bottom: 20px;
 }
@@ -263,6 +263,11 @@ body {
 .discussion-post:hover {
     transform: translateY(-3px);
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.discussion-post h3, p{
+    word-wrap: break-word;
+    overflow-wrap: break-word;
 }
 
 /* Modal Styles */
@@ -758,7 +763,11 @@ input[type="search"]::-webkit-search-results-decoration { display: none; }
     background-color: transparent; /* Set to transparent if needed */
 }
 
-/* Container that holds all complaint boxes */
+.complaint-title, .complaint-content {
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+}
+
 .complaints-grid {
     display: flex;
     flex-direction: column;
@@ -810,4 +819,60 @@ input[type="search"]::-webkit-search-results-decoration { display: none; }
     font-size: 0.85rem;
     color: #adb5bd;
     text-align: right;
+}
+
+.my-posts {
+    margin-top: 20px;
+}
+
+.my-posts-title {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 15px;
+    padding-bottom: 5px;
+    border-bottom: 1px solid #ddd;
+}
+
+.post-list {
+    scrollbar-width: none;
+    max-height: 65%; /* Set a fixed height for the post list */
+    overflow-y: auto; /* Enable scrolling for the post list */
+    padding-right: 10px; /* Add padding for scrollbar space */
+}
+
+.post-item {
+    background-color: #ece2d0;
+    padding: 12px;
+    border-radius: 5px;
+    margin-bottom: 12px;
+    text-decoration: none;
+    color: inherit;
+    transition: transform 0.2s, box-shadow 0.2s;
+    display: block;  /* Ensure it takes full width */
+    border-left: 3px solid #e8687c;  /* Add a colored border for visual interest */
+}
+
+.post-item:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    background-color: #f0e8d8;  /* Slightly lighter on hover */
+}
+
+/* Modify the post-item heading styles to handle long titles */
+.post-item h4 {
+    margin: 0 0 5px;
+    font-size: 14px;
+    color: #333;
+    white-space: nowrap;        /* Keep text in a single line */
+    overflow: hidden;           /* Hide overflow content */
+    text-overflow: ellipsis;    /* Add ellipsis for overflow text */
+    max-width: 100%;            /* Ensure it doesn't exceed container width */
+}
+
+.post-item .post-date,
+.post-item .comments-count {
+    font-size: 12px;
+    color: #666;
+    margin-top: 5px;
+    display: block;  /* Stack them vertically */
 }

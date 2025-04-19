@@ -4,8 +4,6 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Modal Elements
     const complaintModal = document.getElementById('complaint-modal');
-    const editModal = document.getElementById('edit-modal');
-    const deleteModal = document.getElementById('delete-modal');
     const detailModal = document.getElementById('detail-modal');
     
     // Open/Close Buttons
@@ -182,29 +180,13 @@ document.addEventListener('DOMContentLoaded', function() {
                 const currentUserId = getUserId();
                 const isAdmin = getUserRole() === 'admin';
                 
-                if (currentUserId && (parseInt(currentUserId) === complaint.user_id || isAdmin)) {
-                    const actionsDiv = document.createElement('div');
-                    actionsDiv.className = 'post-actions';
-                    
-                    const editBtn = document.createElement('button');
-                    editBtn.className = 'edit-post';
-                    editBtn.setAttribute('data-id', complaint.id);
-                    editBtn.textContent = 'Edit';
-                    
-                    const deleteBtn = document.createElement('button');
-                    deleteBtn.className = 'delete-post';
-                    deleteBtn.setAttribute('data-id', complaint.id);
-                    deleteBtn.textContent = 'Delete';
-                    
-                    actionsDiv.appendChild(editBtn);
-                    actionsDiv.appendChild(deleteBtn);
-                    postElement.appendChild(actionsDiv);
+                if (currentUserId && (complaint.user_id === parseInt(currentUserId) || isAdmin)) {
+                    postElement.appendChild(document.createElement('div')).className = 'post-actions';
                 }
                 
                 postsContainer.appendChild(postElement);
             });
             
-            // Re-attach event listeners for edit and delete buttons
             attachEditDeleteEventListeners();
         })
         .catch(error => {
@@ -316,112 +298,6 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
     });
-    
-    // ===== COMMENTS FUNCTIONALITY =====
-    
-    // Load comments for a complaint
-    function loadComments(complaintId) {
-        const commentsContainer = document.getElementById('comments-container');
-        if (!commentsContainer) return;
-        
-        // Show loading message
-        commentsContainer.innerHTML = '<div class="loading-comments">Loading comments...</div>';
-        
-        fetch(`/api/complaints/${complaintId}/comments`, {
-            method: 'GET',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json',
-                'X-Requested-With': 'XMLHttpRequest',
-                'X-CSRF-TOKEN': csrfToken
-            }
-        })
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
-            return response.json();
-        })
-        .then(data => {
-            // Clear container
-            commentsContainer.innerHTML = '';
-            
-            // Check if we have comments
-            if (data.length === 0) {
-                commentsContainer.innerHTML = '<div class="no-comments">No comments yet.</div>';
-                return;
-            }
-            
-            // Build comments list
-            data.forEach(comment => {
-                const commentElement = document.createElement('div');
-                commentElement.className = 'comment-item';
-                
-                commentElement.innerHTML = `
-                    <div class="comment-author">${comment.user.name}</div>
-                    <div class="comment-date">${formatDate(comment.created_at)}</div>
-                    <div class="comment-content">${comment.content}</div>
-                `;
-                
-                commentsContainer.appendChild(commentElement);
-            });
-        })
-        .catch(error => {
-            console.error('Error fetching comments:', error);
-            commentsContainer.innerHTML = '<div class="error-message">Failed to load comments.</div>';
-        });
-    }
-    
-    // Setup comment form submission
-    const commentForm = document.getElementById('comment-form');
-    if (commentForm) {
-        commentForm.addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            const complaintId = document.getElementById('complaint-id').value;
-            const content = document.getElementById('comment-content').value.trim();
-            
-            if (!content) {
-                alert('Please enter a comment.');
-                return;
-            }
-            
-            submitComment(complaintId, content);
-        });
-    }
-    
-    // Submit a new comment
-    function submitComment(complaintId, content) {
-        fetch(`/api/complaints/${complaintId}/comments`, {
-            method: 'POST',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json',
-                'X-Requested-With': 'XMLHttpRequest',
-                'X-CSRF-TOKEN': csrfToken
-            },
-            body: JSON.stringify({
-                content: content
-            })
-        })
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
-            return response.json();
-        })
-        .then(data => {
-            // Clear the comment form
-            document.getElementById('comment-content').value = '';
-            
-            // Reload comments
-            loadComments(complaintId);
-        })
-        .catch(error => {
-            console.error('Error submitting comment:', error);
-            alert('Failed to submit comment. Please try again.');
-        });
-    }
     
     // ===== HELPER FUNCTIONS =====
     
