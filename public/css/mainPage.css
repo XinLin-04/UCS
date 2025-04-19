@@ -27,6 +27,7 @@ body {
 .logo-container {
     display: flex;
     align-items: center;
+    flex-direction: row;
 }
 
 .logo {
@@ -41,6 +42,14 @@ body {
     font-size: 30px;
     color: #e8687c;
     font-weight: bold;
+    border-radius: 50%; /* Make it circular */
+
+}
+
+.logo img{
+    width: 100%; /* Make the image fit the width of the container */
+    height: 100%; /* Maintain aspect ratio */
+    object-fit: cover; /* Ensure the image fits nicely */
 }
 
 .site-title {
@@ -48,7 +57,7 @@ body {
     font-weight: bold;
 }
 
-.search-bar {
+/* .search-bar {
     display: flex;
     align-items: center;
 }
@@ -70,26 +79,43 @@ body {
     border: none;
     border-radius: 15px;
     min-width: 200px;
-}
+} */
+
+
 
 /* Main Layout - 80% Width */
+main{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: calc(100vh - 70px); /* Adjust for header height */
+    background-color: #f0f0f0;
+}
+
 .main-container {
     display: flex;
     height: calc(100vh - 70px);
     width: 80%;
     margin: 0 auto;
+    margin-left: 5%;
+    margin-right: 5%;
     aspect-ratio: 16/10;
 }
 
 /* Sidebar */
 .sidebar {
     width: 25%;
-    background-color: #808080;
+    background-color: #f4f4f4;
     color: black;
     padding: 20px;
     border-right: 1px solid #ccc;
     position: relative;
     height: calc(100vh - 70px);
+    box-shadow: 0 4px 24px hsla(222, 68%, 12%, .1);
+    box-shadow: inset 1px 1px 1px hsla(222, 68%, 12%, .1);
+
 }
 
 .user-profile {
@@ -443,8 +469,8 @@ h2 {
 /* Error/success messages */
 .alert {
     padding: 10px 15px;
-    margin-bottom: 15px;
     border-radius: 5px;
+    margin-bottom: 0;
 }
 
 .alert-success {
@@ -470,9 +496,10 @@ h2 {
     color: #a94442;
 }
 
-.navLowerPart #searchList, .navLowerPart #cartList, .navLowerPart #logoList {
-    padding: 0;
-}
+.searchContainer {
+    position: relative; /* To contain the absolutely positioned search result */
+    z-index:9999;
+}   
 
 .search {
     height: 36px;
@@ -483,6 +510,19 @@ h2 {
     overflow: hidden;
     transition: width 0.5s cubic-bezier(0.9, 0, 0.3, 0.9);
     margin-bottom: 0;
+}
+
+#search {
+    border: none; /* Removes the border */
+    outline: none; /* Removes the outline */
+    box-shadow: none; /* Removes any box shadow */
+    background-color: transparent; /* Set to transparent if needed */
+}
+
+#search-bar {
+    position: relative;
+    border:none;
+    z-index: 9998;
 }
 
 .search__input {
@@ -501,6 +541,24 @@ h2 {
     transition: opacity 1.5s;
 }
 
+.search__input {
+    font-size: 0.75rem;
+}
+
+.show-search .search__input{
+    opacity: 1;
+    pointer-events: initial;
+}
+
+/* clears the ‘X’ from Internet Explorer */
+input[type=search]::-ms-clear { display: none; width : 0; height: 0; }
+input[type=search]::-ms-reveal { display: none; width : 0; height: 0; }
+/* clears the ‘X’ from Chrome */
+input[type="search"]::-webkit-search-decoration,
+input[type="search"]::-webkit-search-cancel-button,
+input[type="search"]::-webkit-search-results-button,
+input[type="search"]::-webkit-search-results-decoration { display: none; }
+
 .search__button {
     width: 36px;
     height: 36px;
@@ -517,6 +575,10 @@ h2 {
     transition: transform 0.6s cubic-bezier(0.9, 0, 0.3, 0.9);
 }
 
+.show-search .search__button{
+    transform: rotate(90deg);
+}
+
 .bx-search, .bx-x {
     font-size: 150%;
     color: black;
@@ -529,35 +591,6 @@ h2 {
     font-size: 200%;
 }
 
-/* ANIMATION for Nav Bar Search */
-.show-search {
-    width: 186px;
-    box-shadow: 0 4px 24px hsla(222, 68%, 12%, .1);
-    box-shadow: inset 1px 1px 1px hsla(222, 68%, 12%, .1);
-}
-
-.search__input {
-    font-size: 0.75rem;
-}
-
-/* clears the ‘X’ from Internet Explorer */
-input[type=search]::-ms-clear { display: none; width : 0; height: 0; }
-input[type=search]::-ms-reveal { display: none; width : 0; height: 0; }
-/* clears the ‘X’ from Chrome */
-input[type="search"]::-webkit-search-decoration,
-input[type="search"]::-webkit-search-cancel-button,
-input[type="search"]::-webkit-search-results-button,
-input[type="search"]::-webkit-search-results-decoration { display: none; }
-
-.show-search .search__input{
-    opacity: 1;
-    pointer-events: initial;
-}
-
-.show-search .search__button{
-    transform: rotate(90deg);
-}
-
 .show-search .bx-search {
     opacity: 0;
 }
@@ -566,27 +599,9 @@ input[type="search"]::-webkit-search-results-decoration { display: none; }
     opacity: 1;
 }
 
-#search-bar {
-    position: relative;
-    border:none;
-    z-index: 9998;
-}
-
 #search_result {
     position: absolute; /* Ensure it's positioned correctly */
     z-index: 1000; /* Ensure it's above other elements */
-    background-color: white; /* Optional: helps with visibility */
-    border: 1px solid #ccc; /* Optional: helps with visibility */
-}
-
-
-.searchContainer {
-    position: relative; /* To contain the absolutely positioned search result */
-    z-index:9999;
-}
-
-#search_result {
-    position: absolute;
     top: 130%; /* Position it below the search input */
     right: 7%;
     width: 200%;
@@ -600,13 +615,53 @@ input[type="search"]::-webkit-search-results-decoration { display: none; }
     margin-top: 2%;
 }
 
-#noResult {
-    margin-left: 1%;
+.show-search {
+    width: 186px;
+    box-shadow: 0 4px 24px hsla(222, 68%, 12%, .1);
+    box-shadow: inset 1px 1px 1px hsla(222, 68%, 12%, .1);
 }
 
-#search {
-    border: none; /* Removes the border */
-    outline: none; /* Removes the outline */
-    box-shadow: none; /* Removes any box shadow */
-    background-color: transparent; /* Set to transparent if needed */
+.password-requirements {
+    display: none; /* Hide the list by default */
+    list-style: none; /* Remove default list styling */
+}
+
+/* Cross out and fade out animation */
+@keyframes crossOutAndFade {
+    0% {
+        text-decoration: none;
+        opacity: 1;
+    }
+    50% {
+        text-decoration: line-through;
+    }
+    100% {
+        opacity: 0;
+        transform: translateY(-10px); /* Move up slightly */
+    }
+}
+
+/* Apply the animation */
+.cross-out {
+    animation: crossOutAndFade 1s forwards; /* 1s duration, forwards keeps the final state */
+}
+
+/* Smooth transition for moving up */
+.password-requirements li {
+    transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+.valid-input {
+    border: 2px solid green; /* Green border for valid input */
+    box-shadow: 0 0 5px green; /* Optional: Add a green glow effect */
+}
+
+.invalid-feedback {
+    color: red; /* Red text for invalid feedback */
+    display: block; /* Ensure it is visible when invalid */
+}
+
+.valid-feedback {
+    color: green; /* Green text for valid feedback */
+    display: block; /* Ensure it is visible when valid */
 }
