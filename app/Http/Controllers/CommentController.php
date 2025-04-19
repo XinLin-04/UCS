@@ -27,8 +27,6 @@ class CommentController extends Controller
      */
     public function storeApi(Request $request, Complaint $complaint)
     {
-        $this->authorize('create', Comment::class);
-
         $request->validate([
             'content' => 'required|string'
         ]);
@@ -47,8 +45,6 @@ class CommentController extends Controller
      */
     public function store(Request $request)
     {
-        $this->authorize('create', Comment::class);
-
         $request->validate([
             'complaint_id' => 'required|exists:complaints,id',
             'content' => 'required|string'
@@ -69,8 +65,6 @@ class CommentController extends Controller
      */
     public function update(Request $request, Comment $comment)
     {
-        $this->authorize('update', $comment);
-
         $request->validate([
             'content' => 'required|string'
         ]);
@@ -91,8 +85,6 @@ class CommentController extends Controller
      */
     public function destroy(Comment $comment)
     {
-        $this->authorize('delete', $comment);
-
         $complaintId = $comment->complaint_id;
         $comment->delete();
 

@@ -29,8 +29,6 @@ class ComplaintController extends Controller
      */
     public function show(Complaint $complaint)
     {
-        $this->authorize('view', $complaint);
-
         $complaint->load('user');
         $comments = $complaint->comments()
             ->with('user')
@@ -83,8 +81,6 @@ class ComplaintController extends Controller
      */
     public function getComplaint(Complaint $complaint)
     {
-        $this->authorize('view', $complaint);
-
         $complaint->load('user');
         return response()->json($complaint);
     }
@@ -94,8 +90,6 @@ class ComplaintController extends Controller
      */
     public function store(Request $request)
     {
-        $this->authorize('create', Complaint::class);
-
         $request->validate([
             'title' => 'required|string|max:255',
             'content' => 'required|string'
@@ -116,8 +110,6 @@ class ComplaintController extends Controller
      */
     public function update(Request $request, Complaint $complaint)
     {
-        $this->authorize('update', $complaint);
-
         $request->validate([
             'title' => 'required|string|max:255',
             'content' => 'required|string',
@@ -137,8 +129,6 @@ class ComplaintController extends Controller
      */
     public function destroy(Request $request, Complaint $complaint)
     {
-        $this->authorize('delete', $complaint);
-
         $request->validate([
             'admin_note' => 'required_if:user_role,admin|string'
         ]);
@@ -154,7 +144,7 @@ class ComplaintController extends Controller
      */
     public function userComplaints()
     {
-        $complaints = Auth::User()->hasComplaints()->latest()->get();
+        $complaints = Auth::User()->hasComplaints->latest()->get();
         return response()->json($complaints);
     }
 }
