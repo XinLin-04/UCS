@@ -5,8 +5,10 @@ namespace App\Http\Controllers;
 use App\Models\Complaint;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use App\Notifications\ComplaintUpdated;
 use App\Notifications\ComplaintDeleted;
+use Carbon\Carbon;
 
 class ComplaintController extends Controller
 {
@@ -15,8 +17,76 @@ class ComplaintController extends Controller
      */
     public function index()
     {
-        $complaints = Complaint::with('user')->latest()->get();
+        $complaints = Complaint::with('user')
+            ->withCount('comments')
+            ->latest()
+            ->get();
+            
         return view('mainPage', compact('complaints'));
+    }
+    
+    /**
+     * Display the specified complaint.
+     */
+    public function show(Complaint $complaint)
+    {
+        // Load the complaint with its relationships
+        $complaint->load('user');
+        
+        // Get comments for this complaint
+        $comments = $complaint->comments()
+            ->with('user')
+            ->latest()
+            ->get();
+            
+        return view('complaintDetail', compact('complaint', 'comments'));
+    }
+    
+    /**
+     * Get filtered complaints for API
+     */
+    public function getFiltered(Request $request)
+    {
+        $filter = $request->query('filter', 'recent');
+        $query = Complaint::with('user')->withCount('comments');
+        
+        switch ($filter) {
+            case 'recent':
+                $query->latest();
+                break;
+                
+            case 'week':
+                $weekStart = Carbon::now()->subWeek();
+                $query->where('created_at', '>=', $weekStart)
+                      ->orderByDesc(DB::raw('comments_count'));
+                break;
+                
+            case 'month':
+                $monthStart = Carbon::now()->subMonth();
+                $query->where('created_at', '>=', $monthStart)
+                      ->orderByDesc(DB::raw('comments_count'));
+                break;
+                
+            case 'comments':
+                $query->orderByDesc(DB::raw('comments_count'));
+                break;
+                
+            default:
+                $query->latest();
+        }
+        
+        $complaints = $query->get();
+        
+        return response()->json($complaints);
+    }
+    
+    /**
+     * Get a specific complaint details for API
+     */
+    public function getComplaint(Complaint $complaint)
+    {
+        $complaint->load('user');
+        return response()->json($complaint);
     }
 
     /**
@@ -63,11 +133,11 @@ class ComplaintController extends Controller
             
             $complaint->save();
             
-            return redirect()->route('complaints.index')
+            return redirect()->route('complaints.show', $complaint)
                 ->with('success', 'Complaint updated successfully.');
         }
         
-        return redirect()->route('complaints.index')
+        return redirect()->route('complaints.show', $complaint)
             ->with('error', 'You are not authorized to update this complaint.');
     }
 
@@ -94,7 +164,7 @@ class ComplaintController extends Controller
                 ->with('success', 'Complaint deleted successfully.');
         }
         
-        return redirect()->route('complaints.index')
+        return redirect()->route('complaints.show', $complaint)
             ->with('error', 'You are not authorized to delete this complaint.');
     }
 

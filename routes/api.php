@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ComplaintController;
+use App\Http\Controllers\CommentController;
 
 /*
 |--------------------------------------------------------------------------
@@ -19,5 +20,17 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-// API route to fetch user's complaints
+// User's complaints
 Route::middleware('auth:sanctum')->get('/user/complaints', [ComplaintController::class, 'userComplaints']);
+
+// Filtered complaints
+Route::get('/complaints', [ComplaintController::class, 'getFiltered']);
+
+// Single complaint details (for AJAX)
+Route::get('/complaints/{complaint}/details', [ComplaintController::class, 'getComplaint']);
+
+// Comments for a complaint
+Route::get('/complaints/{complaint}/comments', [CommentController::class, 'index']);
+
+// Add comment to a complaint
+Route::middleware('auth:sanctum')->post('/complaints/{complaint}/comments', [CommentController::class, 'store']);
