@@ -1,26 +1,106 @@
 <?php
+
 namespace App\Http\Controllers;
 
 use App\Models\Comment;
+use App\Models\Complaint;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class CommentController extends Controller
 {
-    //Policy
-    public function index()
+    /**
+     * Display a listing of comments for a specific complaint.
+     */
+    public function index(Complaint $complaint)
     {
-        $comment = Comment::all();
-        return view('xxx.index', ['comments' => $comment]);
+        $comments = $complaint->comments()
+            ->with('user')
+            ->latest()
+            ->get();
+
+        return response()->json($comments);
     }
 
-    public function show()
+    /**
+     * Store a newly created comment (API version).
+     */
+    public function storeApi(Request $request, Complaint $complaint)
     {
-        $comment = Comment::all();
-        return view('xxx.show', ['comments' => $comment]);
+        $this->authorize('create', Comment::class);
+
+        $request->validate([
+            'content' => 'required|string'
+        ]);
+
+        $comment = new Comment();
+        $comment->content = $request->content;
+        $comment->user_id = Auth::id();
+        $comment->complaint_id = $complaint->id;
+        $comment->save();
+
+        return response()->json($comment->load('user'), 201);
     }
 
-    public function destroy($id)
+    /**
+     * Store a newly created comment (form submission).
+     */
+    public function store(Request $request)
     {
-        $comment = Comment::find($id);
+        $this->authorize('create', Comment::class);
+
+        $request->validate([
+            'complaint_id' => 'required|exists:complaints,id',
+            'content' => 'required|string'
+        ]);
+
+        $comment = new Comment();
+        $comment->content = $request->content;
+        $comment->user_id = Auth::id();
+        $comment->complaint_id = $request->complaint_id;
+        $comment->save();
+
+        return redirect()->route('complaints.show', $request->complaint_id)
+            ->with('success', 'Comment added successfully.');
+    }
+
+    /**
+     * Update the specified comment.
+     */
+    public function update(Request $request, Comment $comment)
+    {
+        $this->authorize('update', $comment);
+
+        $request->validate([
+            'content' => 'required|string'
+        ]);
+
+        $comment->content = $request->content;
+        $comment->save();
+
+        if ($request->expectsJson()) {
+            return response()->json($comment);
+        }
+
+        return redirect()->route('complaints.show', $comment->complaint_id)
+            ->with('success', 'Comment updated successfully.');
+    }
+
+    /**
+     * Remove the specified comment.
+     */
+    public function destroy(Comment $comment)
+    {
+        $this->authorize('delete', $comment);
+
+        $complaintId = $comment->complaint_id;
         $comment->delete();
+
+        if (request()->expectsJson()) {
+            return response()->json(['message' => 'Comment deleted successfully']);
+        }
+
+        return redirect()->route('complaints.show', $complaintId)
+            ->with('success', 'Comment deleted successfully.');
     }
 }
