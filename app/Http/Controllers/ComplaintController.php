@@ -140,11 +140,19 @@ class ComplaintController extends Controller
     }
 
     /**
-     * Get complaints for the authenticated user.
+     * Get authenticated user's complaints.
      */
-    public function userComplaints()
+    public function getUserComplaints(Request $request)
     {
-        $complaints = Auth::User()->hasComplaints->latest()->get();
-        return response()->json($complaints);
+        $user = $request->user(); // optional if using auth later
+
+        // Fetch complaints, example:
+        $complaints = Complaint::where('user_id', $user ? $user->id : 1)->get(); 
+
+        return response()->json([
+            'success' => true,
+            'complaints' => $complaints
+        ]);
     }
+    
 }

@@ -134,6 +134,10 @@ body {
     color: white;
 }
 
+::-webkit-scrollbar {
+    display: none;
+}
+
 .my-posts-title {
     font-size: 18px;
     font-weight: bold;
@@ -145,7 +149,14 @@ body {
     flex-direction: column;
     gap: 15px;
     margin-bottom: 40px;
+    max-height: 400px;     
+    overflow-y: auto;      
+    overflow-x: hidden;    
+    box-sizing: border-box;
+    scrollbar-color: transparent transparent; 
+    scrollbar-width: thin; 
 }
+
 
 .post-item {
     background-color: #ece2d0;
@@ -745,4 +756,58 @@ input[type="search"]::-webkit-search-results-decoration { display: none; }
     outline: none; /* Removes the outline */
     box-shadow: none; /* Removes any box shadow */
     background-color: transparent; /* Set to transparent if needed */
+}
+
+/* Container that holds all complaint boxes */
+.complaints-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    max-height: 600px; 
+    overflow-y: auto;   
+    overflow-x: hidden; 
+    box-sizing: border-box;
+    scrollbar-width: none; /* Firefox */
+    scroll-behavior: smooth;
+}
+
+/* Hide scrollbar for Chrome, Safari, Edge */
+.complaints-grid::-webkit-scrollbar {
+    width: 0;
+    height: 0;
+}
+
+/* Each complaint box */
+.complaint-box {
+    background-color: #f8f9fa;
+    border: 1px solid #dee2e6;
+    border-radius: 8px;
+    padding: 1rem;
+    transition: background-color 0.3s, box-shadow 0.3s;
+}
+
+.complaint-box:hover {
+    background-color: #e9ecef;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Title inside box */
+.complaint-box h3 {
+    margin-top: 0;
+    margin-bottom: 0.5rem;
+    font-size: 1.2rem;
+}
+
+/* Content preview inside box */
+.complaint-box p {
+    margin: 0;
+    color: #6c757d;
+}
+
+/* Date inside box */
+.complaint-date {
+    margin-top: 0.5rem;
+    font-size: 0.85rem;
+    color: #adb5bd;
+    text-align: right;
 }

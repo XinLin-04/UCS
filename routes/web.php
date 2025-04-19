@@ -27,16 +27,6 @@ Auth::routes(['verify' => true]);
 Route::get('/', [App\Http\Controllers\ComplaintController::class, 'index'])
     ->name('mainPage');
 
-// Route::middleware(['auth', 'verified'])->group(function () {
-//     // Verified-only routes here
-// });
-
-// Complaint routes with appropriate middleware
-// Route::post('/complaints', [ComplaintController::class, 'store'])->middleware('auth')->name('complaints.store');
-// Route::get('/complaints', [ComplaintController::class, 'index'])->name('complaints.index');
-// Route::put('/complaints/{complaint}', [ComplaintController::class, 'update'])->middleware('auth')->name('complaints.update');
-// Route::delete('/complaints/{complaint}', [ComplaintController::class, 'destroy'])->middleware('auth')->name('complaints.destroy');
-
 Route::post('/complaints', [ComplaintController::class, 'store'])->name('complaints.store');
 Route::get('/complaints', [ComplaintController::class, 'index'])->name('complaints.index');
 Route::get('/complaints/{complaint}', [ComplaintController::class, 'show'])->name('complaints.show');

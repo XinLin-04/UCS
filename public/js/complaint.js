@@ -461,14 +461,13 @@ document.addEventListener('DOMContentLoaded', function() {
     function fetchUserComplaints() {
         const userPostsContainer = document.getElementById('user-posts');
         if (!userPostsContainer) return;
-        
         fetch('/api/user/complaints', {
+            method: 'GET',
+            credentials: 'same-origin',
             headers: {
                 'Accept': 'application/json',
-                'X-Requested-With': 'XMLHttpRequest',
-                'X-CSRF-TOKEN': csrfToken
-            },
-            credentials: 'same-origin'
+                'X-Requested-With': 'XMLHttpRequest'
+            }
         })
         .then(response => {
             if (!response.ok) {
@@ -477,32 +476,38 @@ document.addEventListener('DOMContentLoaded', function() {
             return response.json();
         })
         .then(data => {
+            // Clear existing content
             userPostsContainer.innerHTML = '';
-            
-            if (data.length === 0) {
-                userPostsContainer.innerHTML = '<div class="no-posts">You have no posts yet.</div>';
-                return;
-            }
-            
-            data.forEach(post => {
-                const postElement = document.createElement('div');
-                postElement.className = 'post-item';
-                postElement.innerHTML = `
-                    <h4>${post.title}</h4>
-                    <div class="post-date">${formatDate(post.created_at)}</div>
+
+            // Create container for boxes
+            const boxesContainer = document.createElement('div');
+            boxesContainer.className = 'complaints-grid';
+
+            // Add complaint boxes
+            data.complaints.forEach(complaint => {
+                const box = document.createElement('div');
+                box.className = 'complaint-box';
+                box.setAttribute('data-id', complaint.id);
+                box.style.cursor = 'pointer';
+                box.innerHTML = `
+                    <h3>${complaint.title}</h3>
+                    <p>${complaint.content.substring(0, 100)}...</p>
+                    <div class="complaint-date">${formatDate(complaint.created_at)}</div>
                 `;
-                
-                // Make user posts clickable to open details
-                postElement.addEventListener('click', function() {
-                    openDetailModal(post.id);
+
+                // Add click event to navigate to complaint view
+                box.addEventListener('click', () => {
+                    window.location.href = `/complaints/${complaint.id}`;
                 });
-                
-                userPostsContainer.appendChild(postElement);
+
+                boxesContainer.appendChild(box);
             });
+
+            userPostsContainer.appendChild(boxesContainer);
         })
         .catch(error => {
-            console.error('Error fetching user posts:', error);
-            userPostsContainer.innerHTML = '<div class="error-message">Failed to load posts.</div>';
+            console.error('Fetch error:', error);
+            userPostsContainer.innerHTML = '<p>Error loading complaints</p>';
         });
     }
     

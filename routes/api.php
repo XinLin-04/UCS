@@ -20,9 +20,6 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-// User's complaints
-Route::middleware('auth:sanctum')->get('/user/complaints', [ComplaintController::class, 'userComplaints']);
-
 // Filtered complaints
 Route::get('/complaints', [ComplaintController::class, 'getFiltered']);
 
@@ -32,5 +29,11 @@ Route::get('/complaints/{complaint}/details', [ComplaintController::class, 'getC
 // Comments for a complaint
 Route::get('/complaints/{complaint}/comments', [CommentController::class, 'index']);
 
+// User's complaints
+Route::middleware(['api'])->group(function () {
+    Route::get('/user/complaints', [ComplaintController::class, 'getUserComplaints']);
+});
+
 // Add comment to a complaint
 Route::middleware('auth:sanctum')->post('/complaints/{complaint}/comments', [CommentController::class, 'store']);
+
