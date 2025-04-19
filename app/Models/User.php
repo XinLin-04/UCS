@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\Complaint;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -48,7 +49,7 @@ class User extends Authenticatable implements MustVerifyEmail
     /**
      * Get the complaints for the user.
      */
-    public function complaints()
+    public function hasComplaints()
     {
         return $this->hasMany(Complaint::class);
     }

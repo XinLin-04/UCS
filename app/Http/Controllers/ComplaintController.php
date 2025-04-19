@@ -3,11 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Complaint;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
-use App\Notifications\ComplaintUpdated;
-use App\Notifications\ComplaintDeleted;
 use Carbon\Carbon;
 
 class ComplaintController extends Controller
@@ -127,11 +126,6 @@ class ComplaintController extends Controller
 
         $complaint->title = $request->title;
         $complaint->content = $request->content;
-
-        if (Auth::user()->role === 'admin') {
-            $complaint->user->notify(new ComplaintUpdated($complaint, $request->admin_note));
-        }
-
         $complaint->save();
 
         return redirect()->route('complaints.show', $complaint)
@@ -149,10 +143,6 @@ class ComplaintController extends Controller
             'admin_note' => 'required_if:user_role,admin|string'
         ]);
 
-        if (Auth::user()->role === 'admin') {
-            $complaint->user->notify(new ComplaintDeleted($request->admin_note));
-        }
-
         $complaint->delete();
 
         return redirect()->route('complaints.index')
@@ -164,7 +154,7 @@ class ComplaintController extends Controller
      */
     public function userComplaints()
     {
-        $complaints = Auth::user()->complaints()->latest()->get();
+        $complaints = Auth::User()->hasComplaints()->latest()->get();
         return response()->json($complaints);
     }
 }
