@@ -134,23 +134,69 @@ body {
     color: white;
 }
 
+.sidebar {
+    width: 20%;
+    max-height: 100vh; /* Full viewport height */
+    overflow-y: auto; /* Enable vertical scrolling */
+    padding: 15px;
+    background-color: #f9f9f9;
+    border-right: 1px solid #ddd;
+}
+
+.my-posts {
+    margin-top: 20px;
+}
+
 .my-posts-title {
     font-size: 18px;
     font-weight: bold;
     margin-bottom: 15px;
+    padding-bottom: 5px;
+    border-bottom: 1px solid #ddd;
 }
 
 .post-list {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-    margin-bottom: 40px;
+    scrollbar-width: none;
+    max-height: 74%; /* Set a fixed height for the post list */
+    overflow-y: auto; /* Enable scrolling for the post list */
 }
 
 .post-item {
     background-color: #ece2d0;
-    padding: 15px;
+    height: 12%;
+    padding: 12px;
     border-radius: 5px;
+    margin-bottom: 12px;
+    text-decoration: none;
+    color: inherit;
+    transition: transform 0.2s, box-shadow 0.2s;
+    display: block;  /* Ensure it takes full width */
+    border-left: 3px solid #fab24d;  /* Add a colored border for visual interest */
+}
+
+.post-item:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    background-color: #f0e8d8;  /* Slightly lighter on hover */
+}
+
+/* Modify the post-item heading styles to handle long titles */
+.post-item h4 {
+    margin: 0 0 5px;
+    font-size: 14px;
+    color: #333;
+    white-space: nowrap;        /* Keep text in a single line */
+    overflow: hidden;           /* Hide overflow content */
+    text-overflow: ellipsis;    /* Add ellipsis for overflow text */
+    max-width: 100%;            /* Ensure it doesn't exceed container width */
+}
+
+.post-item .post-date,
+.post-item .comments-count {
+    font-size: 12px;
+    color: #666;
+    margin-top: 5px;
+    display: block;  /* Stack them vertically */
 }
 
 .logout {
@@ -159,6 +205,11 @@ body {
     cursor: pointer;
     position: absolute;
     bottom: 20px;
+}
+
+.text{
+    text-decoration: none;
+    color: rgb(0, 0, 0);
 }
 
 /* Main Content */
@@ -240,18 +291,30 @@ body {
     padding: 20px;
     border-radius: 5px;
     min-height: 100px;
-    aspect-ratio: 16/6;
+    height: 180px; /* Fixed height */
     cursor: pointer;
     transition: transform 0.2s, box-shadow 0.2s;
     position: relative;
     display: block;
     text-decoration: none;
     color: inherit;
+    overflow: hidden; /* Hide overflow content */
 }
 
 .discussion-post:hover {
     transform: translateY(-3px);
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Modify the main content post titles to handle long titles */
+.discussion-post h3 {
+    margin-top: 0;
+    margin-bottom: 10px;
+    font-size: 18px;
+    white-space: nowrap;        /* Keep text in a single line */
+    overflow: hidden;           /* Hide overflow content */
+    text-overflow: ellipsis;    /* Add ellipsis for overflow text */
+    max-width: 100%;            /* Ensure it doesn't exceed container width */
 }
 
 /* Modal Styles */
@@ -426,63 +489,6 @@ h2 {
 .form-actions button[type="submit"]:hover {
     background-color: #3a6d96;
 }
-
-/* 16:10 aspect ratio enforcement */
-@media (max-aspect-ratio: 16/10) {
-    .main-container {
-        height: auto;
-        aspect-ratio: 16/10;
-    }
-    
-    .sidebar, .content {
-        height: 100%;
-    }
-}
-
-/* Responsive adjustments */
-@media (max-width: 1024px) {
-    .main-container {
-        width: 95%;
-    }
-    
-    .modal-content {
-        width: 80%;
-    }
-}
-
-@media (max-width: 768px) {
-    .main-container {
-        flex-direction: column;
-        width: 100%;
-        aspect-ratio: auto;
-    }
-    
-    .sidebar {
-        width: 100%;
-        height: auto;
-        min-height: 300px;
-    }
-    
-    .content {
-        height: auto;
-    }
-    
-    .posts-grid {
-        grid-template-columns: 1fr;
-    }
-    
-    .logout {
-        position: relative;
-        margin-top: 40px;
-        bottom: auto;
-    }
-    
-    .modal-content {
-        width: 90%;
-        margin: 20% auto;
-    }
-}
-
 /* Login/Register area */
 .login-register {
     display: flex;
@@ -521,15 +527,15 @@ h2 {
     padding-bottom: 40px; /* Space for post meta info */
 }
 
-.discussion-post h3 {
-    margin-top: 0;
-    margin-bottom: 10px;
-    font-size: 18px;
-}
-
 .post-content {
     margin-bottom: 15px;
     font-size: 14px;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;  
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-height: 63px; /* Approximately 3 lines of text */
 }
 
 .post-meta {
@@ -676,10 +682,10 @@ h2 {
     font-size: 0.75rem;
 }
 
-/* clears the ‘X’ from Internet Explorer */
+/* clears the 'X' from Internet Explorer */
 input[type=search]::-ms-clear { display: none; width : 0; height: 0; }
 input[type=search]::-ms-reveal { display: none; width : 0; height: 0; }
-/* clears the ‘X’ from Chrome */
+/* clears the 'X' from Chrome */
 input[type="search"]::-webkit-search-decoration,
 input[type="search"]::-webkit-search-cancel-button,
 input[type="search"]::-webkit-search-results-button,

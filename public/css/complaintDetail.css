@@ -30,12 +30,22 @@
     border-radius: 8px;
     padding: 30px;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    /* Add overflow properties to handle content that's too wide */
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+    word-break: break-word;
+    hyphens: auto;
 }
 
 .complaint-title {
-    font-size: 28px;
+    font-size: 40px;
     color: #333;
-    margin-bottom: 15px;
+    margin-bottom: 30px;
+    /* Fix title overflow */
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+    word-break: break-word;
+    max-width: 100%;
 }
 
 .complaint-meta {
@@ -45,6 +55,8 @@
     margin-bottom: 25px;
     padding-bottom: 15px;
     border-bottom: 1px solid #eee;
+    /* Make meta section responsive */
+    flex-wrap: wrap;
 }
 
 .author-info {
@@ -58,11 +70,16 @@
     border-radius: 50%;
     background-color: #f5a742;
     margin-right: 10px;
+    flex-shrink: 0;
 }
 
 .author-name {
     font-weight: bold;
     color: #333;
+    /* Prevent author name from causing overflow */
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 200px;
 }
 
 .date-info {
@@ -76,12 +93,19 @@
     color: #333;
     margin-bottom: 30px;
     white-space: pre-line; /* Preserve line breaks */
+    /* Fix content overflow */
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+    word-break: break-word;
+    max-width: 100%;
 }
 
 .complaint-actions {
     display: flex;
     gap: 10px;
     margin-bottom: 30px;
+    /* Make buttons wrap if needed */
+    flex-wrap: wrap;
 }
 
 .edit-complaint-btn,
@@ -140,11 +164,17 @@
     display: flex;
     justify-content: space-between;
     margin-bottom: 10px;
+    /* Make comment meta wrap on small screens */
+    flex-wrap: wrap;
 }
 
 .comment-author {
     font-weight: bold;
     color: #333;
+    /* Prevent comment author from causing overflow */
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 200px;
 }
 
 .comment-date {
@@ -154,6 +184,10 @@
 
 .comment-text {
     line-height: 1.5;
+    /* Fix comment text overflow */
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+    word-break: break-word;
 }
 
 .no-comments {
@@ -186,6 +220,8 @@
     border-radius: 4px;
     resize: vertical;
     font-family: inherit;
+    /* Prevent textarea from expanding beyond container */
+    box-sizing: border-box;
 }
 
 .login-to-comment {
@@ -206,6 +242,14 @@
     text-decoration: underline;
 }
 
+/* Handle modal content overflow */
+.modal-content {
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+    word-break: break-word;
+    max-width: 100%;
+}
+
 /* Responsive Styles */
 @media (max-width: 768px) {
     .detail-container {
@@ -223,5 +267,10 @@
 
     .date-info {
         margin-top: 10px;
+    }
+    
+    /* Improve responsive layout for small screens */
+    .author-name, .comment-author {
+        max-width: 100%;
     }
 }

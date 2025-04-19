@@ -47,3 +47,4 @@ Route::delete('/complaints/{complaint}', [ComplaintController::class, 'destroy']
 Route::post('/comments', [CommentController::class, 'store'])->middleware('auth')->name('comments.store');
 Route::put('/comments/{comment}', [CommentController::class, 'update'])->middleware('auth')->name('comments.update');
 Route::delete('/comments/{comment}', [CommentController::class, 'destroy'])->middleware('auth')->name('comments.destroy');
+Route::middleware('auth')->get('/user/posts', [ComplaintController::class, 'userComplaints'])->name('user.posts');

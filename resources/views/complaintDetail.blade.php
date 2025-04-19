@@ -59,24 +59,6 @@
             <div class="comments-section">
                 <h2>Comments ({{ $comments->count() }})</h2>
                 
-                <div class="comments-list">
-                    @if($comments->count() > 0)
-                        @foreach($comments as $comment)
-                        <div class="comment-item">
-                            <div class="comment-meta">
-                                <span class="comment-author">{{ $comment->user->name }}</span>
-                                <span class="comment-date">{{ $comment->created_at->diffForHumans() }}</span>
-                            </div>
-                            <div class="comment-text">
-                                {{ $comment->content }}
-                            </div>
-                        </div>
-                        @endforeach
-                    @else
-                        <div class="no-comments">No comments yet. Be the first to comment!</div>
-                    @endif
-                </div>
-                
                 @auth
                 <!-- Comment Form for Logged-in Users -->
                 <div class="comment-form">
@@ -98,6 +80,25 @@
                     <p>Please <a href="{{ route('login') }}">login</a> to leave a comment</p>
                 </div>
                 @endauth
+                
+                <div class="comments-list">
+                    @if($comments->count() > 0)
+                        @foreach($comments as $comment)
+                        <div class="comment-item">
+                            <div class="comment-meta">
+                                <span class="comment-author">{{ $comment->user->name }}</span>
+                                <span class="comment-date">{{ $comment->created_at->diffForHumans() }}</span>
+                            </div>
+                            <div class="comment-text">
+                                {{ $comment->content }}
+                            </div>
+                        </div>
+                        @endforeach
+                    @else
+                        <div class="no-comments">No comments yet. Be the first to comment!</div>
+                    @endif
+                </div>
+                
             </div>
         </div>
     </div>

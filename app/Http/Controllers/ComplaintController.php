@@ -42,39 +42,39 @@ class ComplaintController extends Controller
      * Get filtered complaints for API.
      */
     public function getFiltered(Request $request)
-    {
-        $filter = $request->query('filter', 'recent');
-        $query = Complaint::with('user')->withCount('comments');
+{
+    $filter = $request->query('filter', 'recent');
+    $query = Complaint::with('user')->withCount('comments');
 
-        switch ($filter) {
-            case 'recent':
-                $query->latest();
-                break;
+    switch ($filter) {
+        case 'recent':
+            $query->latest();
+            break;
 
-            case 'week':
-                $weekStart = Carbon::now()->subWeek();
-                $query->where('created_at', '>=', $weekStart)
-                      ->orderByDesc(DB::raw('comments_count'));
-                break;
+        case 'week':
+            $weekStart = Carbon::now()->subWeek();
+            $query->where('created_at', '>=', $weekStart)
+                  ->orderByDesc('comments_count');
+            break;
 
-            case 'month':
-                $monthStart = Carbon::now()->subMonth();
-                $query->where('created_at', '>=', $monthStart)
-                      ->orderByDesc(DB::raw('comments_count'));
-                break;
+        case 'month':
+            $monthStart = Carbon::now()->subMonth();
+            $query->where('created_at', '>=', $monthStart)
+                  ->orderByDesc('comments_count');
+            break;
 
-            case 'comments':
-                $query->orderByDesc(DB::raw('comments_count'));
-                break;
+        case 'comments':
+            $query->orderByDesc('comments_count');
+            break;
 
-            default:
-                $query->latest();
-        }
-
-        $complaints = $query->get();
-
-        return response()->json($complaints);
+        default:
+            $query->latest();
     }
+
+    $complaints = $query->get();
+
+    return response()->json($complaints);
+}
 
     /**
      * Get a specific complaint details for API.
@@ -144,7 +144,11 @@ class ComplaintController extends Controller
      */
     public function userComplaints()
     {
-        $complaints = Auth::User()->hasComplaints->latest()->get();
+        $complaints = Complaint::where('user_id', Auth::id())
+            ->withCount('comments')
+            ->orderBy('created_at', 'desc')
+            ->get();
+    
         return response()->json($complaints);
     }
 }
