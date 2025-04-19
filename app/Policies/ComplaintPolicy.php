@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Policies;
 
 use App\Models\Complaint;
@@ -30,7 +29,7 @@ class ComplaintPolicy
      */
     public function view(User $user, Complaint $complaint)
     {
-        return $user->id === $comment->user_id;
+        return $user->id === $complaint->user_id;
     }
 
     /**
@@ -53,7 +52,7 @@ class ComplaintPolicy
      */
     public function update(User $user, Complaint $complaint)
     {
-        return $user->role=="admin" ||$user->id === $complaint->user_id;
+        return $user->role == "admin" || $user->id === $complaint->user_id;
     }
 
     /**
@@ -65,6 +64,6 @@ class ComplaintPolicy
      */
     public function delete(User $user, Complaint $complaint)
     {
-        return $user->role=="admin" ||$user->id === $complaint->user_id;
+        return $user->role == "admin" || $user->id === $complaint->user_id;
     }
 }

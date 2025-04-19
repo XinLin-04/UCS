@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Policies;
 
 use App\Models\Comment;
@@ -16,7 +15,7 @@ class CommentPolicy
      * @param  \App\Models\User  $user
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function viewAny(User $user)
+    public function viewAny()
     {
         return true;
     }
@@ -53,7 +52,7 @@ class CommentPolicy
      */
     public function update(User $user, Comment $comment)
     {
-        return $user->role=="admin" ||$user->id === $comment->user_id;
+        return $user->role == "admin" || $user->id === $comment->user_id;
     }
 
     /**
@@ -65,6 +64,6 @@ class CommentPolicy
      */
     public function delete(User $user, Comment $comment)
     {
-        return $user->role=="admin" ||$user->id === $comment->user_id;
+        return $user->role == "admin" || $user->id === $comment->user_id;
     }
 }
