@@ -543,7 +543,7 @@ h2 {
     margin-bottom: 15px;
     font-size: 14px;
     display: -webkit-box;
-    -webkit-line-clamp: 3;
+    -webkit-line-clamp: 1;
     -webkit-box-orient: vertical;  
     overflow: hidden;
     text-overflow: ellipsis;
@@ -625,7 +625,7 @@ h2 {
 }
 
 .searchContainer {
-    position: relative; /* To contain the absolutely positioned search result */
+    position: relative; 
     z-index:9999;
 }   
 
@@ -641,10 +641,10 @@ h2 {
 }
 
 #search {
-    border: none; /* Removes the border */
-    outline: none; /* Removes the outline */
-    box-shadow: none; /* Removes any box shadow */
-    background-color: transparent; /* Set to transparent if needed */
+    border: none; 
+    outline: none;
+    box-shadow: none; 
+    background-color: transparent;
 }
 
 #search-bar {
@@ -730,10 +730,8 @@ input[type="search"]::-webkit-search-results-decoration { display: none; }
     font-size: 0.75rem;
 }
 
-/* clears the 'X' from Internet Explorer */
 input[type=search]::-ms-clear { display: none; width : 0; height: 0; }
 input[type=search]::-ms-reveal { display: none; width : 0; height: 0; }
-/* clears the 'X' from Chrome */
 input[type="search"]::-webkit-search-decoration,
 input[type="search"]::-webkit-search-cancel-button,
 input[type="search"]::-webkit-search-results-button,
@@ -757,18 +755,17 @@ input[type="search"]::-webkit-search-results-decoration { display: none; }
 }
 
 #search_result {
-    position: absolute; /* Ensure it's positioned correctly */
-    z-index: 1000; /* Ensure it's above other elements */
-    top: 130%; /* Position it below the search input */
+    position: absolute; 
+    z-index: 1000; 
+    top: 130%; 
     right: 7%;
     width: 200%;
-    max-height: 80vh; /* Optional: restrict height */
-    overflow-y: auto; /* Optional: scroll if content overflows */
+    max-height: 80vh; 
+    overflow-y: auto; 
     background-color: white;
     border: 1px solid #ccc;
     z-index: 9999;
     border: none; 
-    /* BORDER NONE !!!! */
     margin-top: 2%;
 }
 
@@ -780,7 +777,7 @@ input[type="search"]::-webkit-search-results-decoration { display: none; }
 
 .password-requirements {
     display: none; /* Hide the list by default */
-    list-style: none; /* Remove default list styling */
+    list-style: none; 
 }
 
 @keyframes crossOutAndFade {
@@ -797,9 +794,8 @@ input[type="search"]::-webkit-search-results-decoration { display: none; }
     }
 }
 
-/* Apply the animation */
 .cross-out {
-    animation: crossOutAndFade 1s forwards; /* 1s duration, forwards keeps the final state */
+    animation: crossOutAndFade 1s forwards; 
 }
 
 /* Smooth transition for moving up */
@@ -808,25 +804,25 @@ input[type="search"]::-webkit-search-results-decoration { display: none; }
 }
 
 .valid-input {
-    border: 2px solid green; /* Green border for valid input */
-    box-shadow: 0 0 5px green; /* Optional: Add a green glow effect */
+    border: 2px solid green; 
+    box-shadow: 0 0 5px green; 
 }
 
 .invalid-feedback {
-    color: red; /* Red text for invalid feedback */
-    display: block; /* Ensure it is visible when invalid */
+    color: red; 
+    display: block; 
 }
 
 .valid-feedback {
-    color: green; /* Green text for valid feedback */
-    display: block; /* Ensure it is visible when valid */
+    color: green;
+    display: block; 
 }
 
 .email-requirements li {
     white-space: nowrap;
     text-overflow: ellipsis;
-    width: 100%; /* Adjust the width as needed */
-    display: block; /* Ensure it behaves like a block element */
+    width: 100%; 
+    display: block; 
 }
 
 .alert-success-homePage {

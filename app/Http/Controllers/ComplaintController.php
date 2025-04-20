@@ -113,28 +113,20 @@ class ComplaintController extends Controller
         $request->validate([
             'title' => 'required|string|max:255',
             'content' => 'required|string',
-            'admin_note' => 'required_if:user_role,admin|string'
         ]);
-
+    
         $complaint->title = $request->title;
         $complaint->content = $request->content;
         $complaint->save();
-
+    
         return redirect()->route('complaints.show', $complaint)
             ->with('success', 'Complaint updated successfully.');
     }
-
-    /**
-     * Remove the specified complaint.
-     */
+    
     public function destroy(Request $request, Complaint $complaint)
     {
-        $request->validate([
-            'admin_note' => 'required_if:user_role,admin|string'
-        ]);
-
         $complaint->delete();
-
+    
         return redirect()->route('complaints.index')
             ->with('success', 'Complaint deleted successfully.');
     }

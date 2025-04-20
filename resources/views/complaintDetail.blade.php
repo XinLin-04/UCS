@@ -107,16 +107,6 @@
                     <textarea id="edit-content" name="content" rows="6" required>{{ $complaint->content }}</textarea>
                 </div>
 
-                @auth
-                    @if(Auth::user()->role == 'admin')
-                        <div class="form-group admin-note">
-                            <label for="admin-note">Explanation Note (Required for Admin)</label>
-                            <textarea id="admin-note" name="admin_note" rows="3" required></textarea>
-                        </div>
-                        <input type="hidden" name="user_role" value="admin">
-                    @endif
-                @endauth
-
                 <div class="form-actions">
                     <button type="button" id="cancel-edit">Cancel</button>
                     <button type="submit">Update Complaint</button>
@@ -136,16 +126,6 @@
             <form id="delete-form" method="POST" action="{{ route('complaints.destroy', $complaint) }}">
                 @csrf
                 @method('DELETE')
-
-                @auth
-                    @if(Auth::user()->role == 'admin')
-                        <div class="form-group admin-note">
-                            <label for="delete-admin-note">Explanation Note (Required for Admin)</label>
-                            <textarea id="delete-admin-note" name="admin_note" rows="3" required></textarea>
-                        </div>
-                        <input type="hidden" name="user_role" value="admin">
-                    @endif
-                @endauth
 
                 <div class="form-actions">
                     <button type="button" id="cancel-delete">Cancel</button>
