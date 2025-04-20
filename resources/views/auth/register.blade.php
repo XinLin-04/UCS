@@ -37,14 +37,9 @@
                                     <ul class="email-requirements mt-2" id="email-requirements" style="display: none;">
                                         <li id="valid-email" class="text-danger">✘ Must be a valid email format (e.g., example@1utar.my)</li>
                                     </ul>
-                                    <span id="email-feedback" class="invalid-feedback" role="alert" style="display: none;">
-                                        <strong id="email-feedback-text"></strong>
+                                    <span id="email-feedback" class="invalid-feedback" role="alert" style="display: {{ $errors->has('email') ? 'block' : 'none' }};">
+                                        <strong id="email-feedback-text">{{ $errors->first('email') }}</strong>
                                     </span>
-                                    @error('email')
-                                        <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $message }}</strong>
-                                        </span>
-                                    @enderror
                                 </div>
                             </div>
 
