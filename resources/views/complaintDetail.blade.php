@@ -1,26 +1,10 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>{{ $complaint->title }} - UTAR Complainsion</title>
-    <link rel="stylesheet" href="{{ asset('css/mainPage.css') }}">
+@extends('layouts.header')
+@section('head')
     <link rel="stylesheet" href="{{ asset('css/complaintDetail.css') }}">
-</head>
-<body>
-    <!-- Header - Full Width -->
-    <header class="header">
-        <div class="logo-container">
-            <div class="logo">u</div>
-            <div class="site-title">UTAR Complainsion</div>
-        </div>
-        <div class="search-bar">
-            <div class="search-icon">🔍</div>
-            <input type="text" class="search-input">
-        </div>
-    </header>
-    
+@endsection
+
+@section('content')
+@section('content')
     <!-- Main Content - 80% Width -->
     <div class="main-container detail-container">
         <!-- Back to Main Page -->
@@ -183,8 +167,10 @@
             {{ session('error') }}
         </div>
     @endif
-
-    <script src="{{ asset('js/app.js') }}"></script>
+@endsection
+@section('scripts')
     <script src="{{ asset('js/complaintDetail.js') }}"></script>
+@endsection
 </body>
+
 </html>

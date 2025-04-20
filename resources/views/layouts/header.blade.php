@@ -5,8 +5,6 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <meta name="user-id" content="{{ Auth::check() ? Auth::id() : '' }}">
-    <meta name="user-role" content="{{ Auth::check() ? Auth::user()->role : '' }}">
     <title>UTAR Complainsion</title>
 
     <title>{{ config('app.name', 'Laravel') }}</title>
@@ -27,7 +25,6 @@
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     <link href="{{ asset('css/mainPage.css') }}" rel="stylesheet">
-    <link href="{{ asset('css/complaintDetail.css') }}" rel="stylesheet">
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
 
     <!-- Page-specific styles -->
@@ -46,19 +43,20 @@
                         </div>
                         <div class="site-title">
                             {{ config('app.name', 'Laravel') }}
+
                         </div>
                     </a>
                 </div>
                 <!-- Show Search Icon -->
                 <div class="searchContainer">
-                    <form action="javascript:void(0);" class="search" id="search-bar">
-                        <input type="search" name="query" placeholder="Enter to Search" class="search__input"
-                            id="search" required>
+                    <form action="" class="search" id="search-bar">
+                        <input type="search" placeholder="Enter to Search" class="search__input" id="search">
                         <div class="search__button" id="search-button">
                             <i class='bx bx-search'></i>
                             <i class='bx bx-x'></i>
                         </div>
                     </form>
+                    <div id="search_result"></div> <!-- Moved outside the form -->
                 </div>
             </div>
         </nav>
