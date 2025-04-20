@@ -29,7 +29,7 @@ class ComplaintPolicy
      */
     public function view(User $user, Complaint $complaint)
     {
-        return $user->id === $complaint->user_id;
+        return true;
     }
 
     /**
@@ -52,7 +52,7 @@ class ComplaintPolicy
      */
     public function update(User $user, Complaint $complaint)
     {
-        return $user->role == "admin" || $user->id === $complaint->user_id;
+        return $user->id === $complaint->user_id || $user->role == "admin" ;
     }
 
     /**
@@ -64,6 +64,6 @@ class ComplaintPolicy
      */
     public function delete(User $user, Complaint $complaint)
     {
-        return $user->role == "admin" || $user->id === $complaint->user_id;
+        return $user->id === $complaint->user_id || $user->role == "admin" ;
     }
 }

@@ -32,6 +32,8 @@ Route::get('/complaints/{complaint}/details', [ComplaintController::class, 'getC
 // Comments for a complaint
 Route::get('/complaints/{complaint}/comments', [CommentController::class, 'index']);
 
+Route::get('/complaints', [ComplaintController::class, 'apiIndex']);
+
 // Add comment to a complaint
 Route::middleware('auth:sanctum')->post('/complaints/{complaint}/comments', [CommentController::class, 'store']);
 
