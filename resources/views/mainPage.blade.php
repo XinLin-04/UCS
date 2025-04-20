@@ -1,24 +1,12 @@
 @extends('layouts.header')
 @section('content')
-    <!-- Header - Full Width -->
-    <header class="header">
-        <div class="logo-container">
-            <div class="logo">u</div>
-            <div class="site-title">UTAR Complainsion</div>
-        </div>
-        <div class="search-bar">
-            <div class="search-icon">🔍</div>
-            <input type="text" class="search-input">
-        </div>
-    </header>
-    
+    @if (session('success'))
+    <div class="alert alert-success">
+        {{ session('success') }}
+    </div>
+    @endif
     <!-- Main Content - 80% Width -->
     <div class="main-container">
-        @if (session('success'))
-        <div class="alert alert-success">
-            {{ session('success') }}
-        </div>
-        @endif
         <!-- Sidebar -->
         <div class="sidebar">
             <div class="user-profile">
