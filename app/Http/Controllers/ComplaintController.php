@@ -16,6 +16,7 @@ class ComplaintController extends Controller
      */
     public function index()
     {
+        $this->authorize('viewAny', Complaint::class); // Check if the user has permission to view complaints
         $complaints = Complaint::with('user')
             ->withCount('comments')
             ->latest()
@@ -29,6 +30,7 @@ class ComplaintController extends Controller
      */
     public function show(Complaint $complaint)
     {
+        $this->authorize('view', $complaint); // Check if the user has permission to view the complaint
         $complaint->load('user');
         $comments = $complaint->comments()
             ->with('user')

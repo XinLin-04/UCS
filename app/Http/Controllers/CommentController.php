@@ -14,6 +14,7 @@ class CommentController extends Controller
      */ 
     public function index(Complaint $complaint)
     {
+        $this->authorize('viewAny', Comment::class); // Check if the user can view any comments
         $comments = $complaint->comments()
             ->with('user')
             ->latest()

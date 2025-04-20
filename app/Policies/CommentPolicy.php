@@ -15,7 +15,7 @@ class CommentPolicy
      * @param  \App\Models\User  $user
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function viewAny()
+    public function viewAny(User $user = null) // Allow a null entity for public access
     {
         return true;
     }
