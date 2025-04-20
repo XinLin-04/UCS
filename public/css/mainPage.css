@@ -932,3 +932,10 @@ input[type="search"]::-webkit-search-results-decoration { display: none; }
     margin-top: 5px;
     display: block;  /* Stack them vertically */
 }
+
+.email-requirements li {
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    width: 100%; /* Adjust the width as needed */
+    display: block; /* Ensure it behaves like a block element */
+}

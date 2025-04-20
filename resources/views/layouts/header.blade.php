@@ -11,7 +11,8 @@
 
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}" defer></script>
-    <script src="{{ asset('js/passwordValidation.js') }}" defer></script>
+    <script src="{{ asset('js/registerValidation/passwordValidation.js') }}" defer></script>
+    <script src="{{ asset('js/registerValidation/emailValidation.js') }}" defer></script>
     <script src="{{ asset('js/session.js') }}" defer></script>
     <script src="{{ asset('js/search.js') }}" defer></script>
     <script src="{{ asset('js/complaint.js') }}" defer></script>

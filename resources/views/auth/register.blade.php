@@ -33,8 +33,13 @@
                                 <label for="email" class="col-md-4 col-form-label text-md-end">{{ __('Email Address') }}</label>
     
                                 <div class="col-md-6">
-                                    <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}"  autocomplete="email">
-    
+                                    <input id="email" type="text" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}"  autocomplete="email">
+                                    <ul class="email-requirements mt-2" id="email-requirements" style="display: none;">
+                                        <li id="valid-email" class="text-danger">✘ Must be a valid email format (e.g., example@1utar.my)</li>
+                                    </ul>
+                                    <span id="email-feedback" class="invalid-feedback" role="alert" style="display: none;">
+                                        <strong id="email-feedback-text"></strong>
+                                    </span>
                                     @error('email')
                                         <span class="invalid-feedback" role="alert">
                                             <strong>{{ $message }}</strong>
@@ -57,8 +62,7 @@
                                         <li id="uppercase" class="text-danger">✘ At least 1 uppercase letter (A–Z)</li>
                                         <li id="lowercase" class="text-danger">✘ At least 1 lowercase letter (a–z)</li>
                                         <li id="number" class="text-danger">✘ At least 1 number (0–9)</li>
-                                        <li id="special" class="text-danger">✘ At least 1 special character (! @ # $ % ^ &
-                                            *)</li>
+                                        <li id="special" class="text-danger">✘ At least 1 special character (! @ # $ % ^ & *)</li>
                                     </ul>
                                     <span id="password-feedback" class="invalid-feedback" role="alert"
                                         style="display: {{ $errors->has('password') ? 'block' : 'none' }};">
@@ -68,12 +72,13 @@
                             </div>
 
                             <div class="row mb-3">
-                                <label for="password-confirm"
-                                    class="col-md-4 col-form-label text-md-end">{{ __('Confirm Password') }}</label>
-
+                                <label for="password-confirm" class="col-md-4 col-form-label text-md-end">{{ __('Confirm Password') }}</label>
+                            
                                 <div class="col-md-6">
-                                    <input id="password-confirm" type="password" class="form-control"
-                                        name="password_confirmation" autocomplete="new-password">
+                                    <input id="password-confirm" type="password" class="form-control" name="password_confirmation" autocomplete="new-password">
+                                    <span id="confirm-password-feedback" class="invalid-feedback" role="alert" style="display: none;">
+                                        <strong id="confirm-password-feedback-text"></strong>
+                                    </span>
                                 </div>
                             </div>
 
