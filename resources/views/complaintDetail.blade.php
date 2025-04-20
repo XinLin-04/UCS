@@ -107,6 +107,7 @@
     </div>
 </div>
 
+<!-- Here abit redundant-->
 <!-- Edit Complaint Modal -->
 <div id="edit-modal" class="modal">
     <div class="modal-content">
@@ -148,6 +149,48 @@
 
             <div class="form-actions">
                 <button type="button" id="cancel-delete">Cancel</button>
+                <button type="submit" class="delete-btn">Delete</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Edit Comment Modal -->
+<div id="edit-comment-modal" class="modal">
+    <div class="modal-content">
+        <span class="close edit-comment-close">&times;</span>
+        <h2>Edit Comment</h2>
+
+        <form id="edit-comment-form" method="POST" action="">
+            @csrf
+            @method('PUT')
+            <div class="form-group">
+                <label for="edit-comment-content">Content</label>
+                <textarea id="edit-comment-content" name="content" rows="4" required></textarea>
+            </div>
+
+            <div class="form-actions">
+                <button type="button" id="cancel-edit-comment">Cancel</button>
+                <button type="submit">Update Comment</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Delete Comment Modal -->
+<div id="delete-comment-modal" class="modal">
+    <div class="modal-content">
+        <span class="close delete-comment-close">&times;</span>
+        <h2>Delete Comment</h2>
+
+        <p>Are you sure you want to delete this comment?</p>
+
+        <form id="delete-comment-form" method="POST" action="">
+            @csrf
+            @method('DELETE')
+
+            <div class="form-actions">
+                <button type="button" id="cancel-delete-comment">Cancel</button>
                 <button type="submit" class="delete-btn">Delete</button>
             </div>
         </form>
