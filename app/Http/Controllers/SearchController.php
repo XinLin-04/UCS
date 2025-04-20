@@ -3,26 +3,25 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Post; // Or whatever model you're searching
-use App\Models\Product; // If you want to search products
+use App\Models\Complaint; // Replace with your actual model name
 
 class SearchController extends Controller
 {
-    //
-
-
-    public function index(Request $request)
+    public function search(Request $request)
     {
-        // Get the search term from the query string
-        $searchTerm = $request->input('query');
-
-        // Example search logic for posts
-        $posts = Post::where('title', 'like', '%' . $searchTerm . '%')->get();
-
-        // Example search logic for products (you can use one or both depending on your case)
-        $products = Product::where('name', 'like', '%' . $searchTerm . '%')->get();
-
-        // Pass the results to the view
-        return view('search.results', compact('posts', 'products'));
+        $query = $request->input('query');
+    
+        if (empty($query)) {
+            // Return all recent posts if the query is blank
+            $complaints = Complaint::with('user')->latest()->get();
+        } else {
+            // Search for posts matching the query
+            $complaints = Complaint::where('title', 'LIKE', "%{$query}%")
+                ->orWhere('content', 'LIKE', "%{$query}%")
+                ->with('user')
+                ->get();
+        }
+    
+        return response()->json($complaints);
     }
 }

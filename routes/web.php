@@ -18,6 +18,8 @@ use App\Http\Controllers\Auth\RegisterController;
 | contains the "web" middleware group. Now create something great!
 |
 */
+Route::post('/search', [SearchController::class, 'search'])->name('search');
+
 Route::post('/email/resend-unverified', [App\Http\Controllers\Auth\VerificationController::class, 'resendForUnverifiedUser'])
     ->name('verification.resend.unverified');
 
