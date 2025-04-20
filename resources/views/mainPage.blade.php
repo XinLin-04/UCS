@@ -11,7 +11,16 @@
         <div class="sidebar">
             <div class="user-profile">
                 @auth
-                <div class="avatar" style="background-image: url('{{ asset('/images/tungtungtungsahur.jpg') }}');"></div>                    <div class="username" data-user-id="{{ Auth::id() }}" data-role="{{ Auth::user()->role }}">{{ Auth::user()->name }}</div>
+                <form id="avatar-form" action="{{ route('profile.update') }}" method="POST" enctype="multipart/form-data">
+                    @csrf
+                    @method('POST')
+                    <div class="avatar-container">
+                        <label for="avatar-input" class="avatar" style="background-image: url('{{ Auth::user()->profile_picture ?? asset('images/default-avatar.png') }}');"></label>
+                        <input type="file" id="avatar-input" name="profile_picture" accept="image/*" style="display: none;" onchange="document.getElementById('avatar-form').submit();">
+                        <div class="add-icon">+</div>
+                    </div>
+                </form>
+                <div class="username" data-user-id="{{ Auth::id() }}" data-role="{{ Auth::user()->role }}">{{ Auth::user()->name }}</div>
                 @else
                     <div class="login-register">
                         <a href="{{ route('login') }}" class="login-btn">Login</a>

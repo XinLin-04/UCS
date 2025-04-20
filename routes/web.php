@@ -6,6 +6,8 @@ use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\ComplaintController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\Auth\RegisterController;
+use App\Http\Controllers\UserController;
+
 
 
 /*
@@ -18,6 +20,8 @@ use App\Http\Controllers\Auth\RegisterController;
 | contains the "web" middleware group. Now create something great!
 |
 */
+Route::post('/profile/update', [UserController::class, 'updateProfilePicture'])->name('profile.update');
+
 Route::post('/search', [SearchController::class, 'search'])->name('search');
 
 Route::post('/email/resend-unverified', [App\Http\Controllers\Auth\VerificationController::class, 'resendForUnverifiedUser'])
