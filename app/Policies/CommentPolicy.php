@@ -27,7 +27,7 @@ class CommentPolicy
      * @param  \App\Models\Comment  $comment
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function view(User $user, Comment $comment)
+    public function view(User $user = null, Comment $comment)
     {
         return true;
     }

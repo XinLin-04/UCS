@@ -27,7 +27,7 @@ class ComplaintPolicy
      * @param  \App\Models\Complaint  $complaint
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function view(User $user, Complaint $complaint)
+    public function view(User $user = null, Complaint $complaint)
     {
         return true;
     }
