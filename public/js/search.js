@@ -1,88 +1,83 @@
-       // Search Icon Toggle Function
-       const toggleSearch = (search, button) =>{
-        const searchBar = document.getElementById(search),
-                searchButton = document.getElementById(button)
-    
-        searchButton.addEventListener('click', () =>{
-            //Add show-search class, so that the search bar expands
-            searchBar.classList.toggle('show-search')
+// Search Icon Toggle Function
+const toggleSearch = (search, button) => {
+    const searchBar = document.getElementById(search),
+        searchButton = document.getElementById(button);
+
+    searchButton.addEventListener("click", () => {
+        //Add show-search class, so that the search bar expands
+        searchBar.classList.toggle("show-search");
+    });
+};
+
+// Initialize the toggleSearch function
+toggleSearch("search-bar", "search-button");
+
+document.addEventListener("DOMContentLoaded", () => {
+    const searchInput = document.getElementById("search");
+    const postsContainer = document.getElementById("all-posts");
+
+    // Function to fetch and display search results
+    function fetchSearchResults(query = "") {
+        fetch("/search", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "X-CSRF-TOKEN": document
+                    .querySelector('meta[name="csrf-token"]')
+                    .getAttribute("content"),
+            },
+            body: JSON.stringify({ query }),
         })
+            .then((response) => response.json())
+            .then((data) => {
+                // Clear previous posts
+                postsContainer.innerHTML = "";
+    
+                if (data.length > 0) {
+                    // Display search results
+                    data.forEach(complaint => {
+                        const postElement = document.createElement("a"); // Use <a> for clickable links
+                        postElement.classList.add("discussion-post");
+                        postElement.setAttribute("data-id", complaint.id);
+                        postElement.href = `/complaints/${complaint.id}`; // Link to complaint details page
+    
+                        postElement.innerHTML = `
+                            <h3>${complaint.title}</h3>
+                            <p class="post-content">${complaint.content}</p>
+                            <div class="post-meta">
+                                <span class="post-author">By: ${complaint.user.name}</span>
+                                <span class="post-date">${new Date(complaint.created_at).toLocaleDateString()}</span>
+                            </div>
+                        `;
+    
+                        postsContainer.appendChild(postElement);
+                    });
+                } else {
+                    // Display "No results found" message
+                    postsContainer.innerHTML =
+                        "<p>No posts found matching your search query.</p>";
+                }
+            })
+            .catch((error) => {
+                console.error("Error fetching search results:", error);
+            });
     }
-    
-    // Initialize the toggleSearch function
-    toggleSearch('search-bar', 'search-button');
-    
-        document.getElementById("search").addEventListener("input", Search);
-    document.getElementById("search-button").addEventListener("click", function () {
-      // Additional functionality for search button can go here
-    });
-    
-    function Search() {
-      var searchInput = document.getElementById("search").value;
-      var searchResultDiv = document.getElementById("search_result");
-    
-      // Clear and hide results if the search input is empty
-      if (searchInput.trim() === "") {
-        searchResultDiv.innerHTML = ""; // Clear the search results
-        searchResultDiv.style.display = "none"; // Hide the search results container
-        return; // Exit the function if input is empty
-      }
-    
-      // If there's input, display the search results container
-      searchResultDiv.style.display = "inline";
-    
-      var xhr = new XMLHttpRequest();
-      xhr.open("POST", "includes/search.php", true);
-      xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-      xhr.onreadystatechange = function () {
-        if (xhr.readyState == 4 && xhr.status == 200) {
-          document.getElementById("search_result").innerHTML = xhr.responseText;
-        } else if (xhr.readyState == 4) {
-          alert("There was a problem with the request.");
+
+    // Event listener for search input
+    searchInput.addEventListener("input", () => {
+        const query = searchInput.value.trim();
+
+        if (query.length >= 3) {
+            fetchSearchResults(query); // Fetch filtered results
+        } else if (query === "") {
+            fetchSearchResults(); // Fetch all recent posts when input is blank
+        } else {
+            // Optionally, show a message for short queries
+            postsContainer.innerHTML =
+                "<p>Please enter at least 3 characters to search.</p>";
         }
-      };
-      xhr.send("name=" + encodeURIComponent(searchInput));
-    }
-    
-    // Function to clear search input and hide search results
-    const clearInput = () => {
-      const searchInput = document.querySelector(".search__input");
-      const xIcon = document.querySelector(".bx-x");
-      const searchResultDiv = document.querySelector("#search_result");
-    
-      if (searchInput && xIcon) {
-        xIcon.addEventListener("click", () => {
-          searchInput.value = "";
-          searchResultDiv.innerHTML = ""; // Clear search results
-          searchResultDiv.style.display = "none"; // Hide the search results container
-        });
-      }
-    };
-    
-    // Function to hide search results when clicking outside the search area
-    function handleClickOutside(event) {
-      const searchInput = document.getElementById("search");
-      const searchResultDiv = document.getElementById("search_result");
-    
-      // Check if the click is outside the search input or result area
-      if (
-        !searchInput.contains(event.target) &&
-        !searchResultDiv.contains(event.target)
-      ) {
-        searchResultDiv.style.display = "none"; // Hide the search results container
-      }
-    }
-    
-    // Show search results again when the input is focused
-    document.getElementById("search").addEventListener("focus", function () {
-      const searchResultDiv = document.getElementById("search_result");
-      if (this.value.trim() !== "") {
-        searchResultDiv.style.display = "inline"; // Show the search results container
-      }
     });
-    
-    // Add a global click event listener to the document
-    document.addEventListener("click", handleClickOutside);
-    
-    // Initialize the clearInput functionality
-    clearInput();
+
+    // Fetch all recent posts on page load
+    fetchSearchResults();
+});
