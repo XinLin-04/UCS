@@ -15,6 +15,10 @@ document.addEventListener('DOMContentLoaded', function() {
     const filterButton = document.getElementById('filter-toggle');
     const filterDropdown = document.getElementById('filter-dropdown');
     const filterOptions = document.querySelectorAll('.filter-dropdown li');
+
+    // User Posts Container
+    const userPostsContainer = document.getElementById('user-posts');
+
     
     // Initialize Active Filter
     let activeFilter = 'recent';
@@ -231,10 +235,6 @@ document.addEventListener('DOMContentLoaded', function() {
         // Automatically apply the default filter on page load
         fetchFilteredPosts('recent');
     }
-});
-
-document.addEventListener('DOMContentLoaded', function () {
-    const userPostsContainer = document.getElementById('user-posts');
 
     if (userPostsContainer) {
         fetch('/user/posts', {
