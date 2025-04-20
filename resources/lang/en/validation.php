@@ -2,6 +2,8 @@
 
 return [
 
+  
+
     /*
     |--------------------------------------------------------------------------
     | Validation Language Lines
@@ -97,6 +99,8 @@ return [
         'array' => 'The :attribute must have at least :min items.',
     ],
     'multiple_of' => 'The :attribute must be a multiple of :value.',
+    'name.min' => 'The name must be more than 6 characters.',
+    'name.regex' => 'The name may only contain letters and spaces.',
     'not_in' => 'The selected :attribute is invalid.',
     'not_regex' => 'The :attribute format is invalid.',
     'numeric' => 'The :attribute must be a number.',
@@ -140,13 +144,18 @@ return [
     | specify a specific custom language line for a given attribute rule.
     |
     */
-
     'custom' => [
-        'attribute-name' => [
-            'rule-name' => 'custom-message',
+        'name' => [
+            'min' => 'The name must be more than 6 characters.',
+            'regex' => 'The name may only contain letters and spaces.',
+        ],
+        'email' => [
+            'regex' => 'The email must be a valid 1utar.my email address.',
+        ],
+        'password' => [
+            'regex' => 'Password must include at least 1 uppercase, 1 lowercase, 1 number, and 1 special character.',
         ],
     ],
-
     /*
     |--------------------------------------------------------------------------
     | Custom Validation Attributes
