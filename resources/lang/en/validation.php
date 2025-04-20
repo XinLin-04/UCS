@@ -99,8 +99,6 @@ return [
         'array' => 'The :attribute must have at least :min items.',
     ],
     'multiple_of' => 'The :attribute must be a multiple of :value.',
-    'name.min' => 'The name must be more than 6 characters.',
-    'name.regex' => 'The name may only contain letters and spaces.',
     'not_in' => 'The selected :attribute is invalid.',
     'not_regex' => 'The :attribute format is invalid.',
     'numeric' => 'The :attribute must be a number.',
