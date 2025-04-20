@@ -183,8 +183,8 @@ main{
 
 .post-list {
     scrollbar-width: none;
-    max-height: 74%; /* Set a fixed height for the post list */
-    overflow-y: auto; /* Enable scrolling for the post list */
+    max-height: 65%;
+    overflow-y: auto; 
 }
 
 .post-item {
