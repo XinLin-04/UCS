@@ -8,8 +8,6 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Open/Close Buttons
     const openButton = document.getElementById('open-complaint-form');
-    const closeButtons = document.querySelectorAll('.close');
-    const cancelButtons = document.querySelectorAll('[id^="cancel-"]');
     
     // Filter Dropdown
     const filterButton = document.getElementById('filter-toggle');
@@ -28,36 +26,10 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
     
-    // Close modals with X button
-    closeButtons.forEach(button => {
-        button.addEventListener('click', function() {
-            complaintModal.style.display = 'none';
-            editModal.style.display = 'none';
-            deleteModal.style.display = 'none';
-            if (detailModal) detailModal.style.display = 'none';
-        });
-    });
-    
-    // Close modals with Cancel button
-    cancelButtons.forEach(button => {
-        button.addEventListener('click', function() {
-            complaintModal.style.display = 'none';
-            editModal.style.display = 'none';
-            deleteModal.style.display = 'none';
-            if (detailModal) detailModal.style.display = 'none';
-        });
-    });
-    
     // Close when clicking outside the modal
     window.addEventListener('click', function(event) {
         if (event.target === complaintModal) {
             complaintModal.style.display = 'none';
-        }
-        if (event.target === editModal) {
-            editModal.style.display = 'none';
-        }
-        if (event.target === deleteModal) {
-            deleteModal.style.display = 'none';
         }
         if (detailModal && event.target === detailModal) {
             detailModal.style.display = 'none';
@@ -65,7 +37,6 @@ document.addEventListener('DOMContentLoaded', function() {
     });
     
     // ===== FILTER FUNCTIONALITY =====
-    
     // Toggle filter dropdown
     if (filterButton) {
         filterButton.addEventListener('click', function() {
@@ -186,58 +157,12 @@ document.addEventListener('DOMContentLoaded', function() {
                 
                 postsContainer.appendChild(postElement);
             });
-            
-            attachEditDeleteEventListeners();
         })
         .catch(error => {
             console.error('Error fetching filtered posts:', error);
             postsContainer.innerHTML = '<div class="error-message">Failed to load posts.</div>';
         });
     }
-    
-    // ===== EDIT & DELETE FUNCTIONALITY =====
-    
-    // Attach event listeners to edit and delete buttons
-    function attachEditDeleteEventListeners() {
-        // Edit buttons
-        const editButtons = document.querySelectorAll('.edit-post');
-        editButtons.forEach(button => {
-            button.addEventListener('click', function(e) {
-                e.preventDefault();
-                e.stopPropagation(); // Prevent navigation to detail page
-                
-                const postId = this.getAttribute('data-id');
-                const postElement = this.closest('.discussion-post');
-                const postTitle = postElement.querySelector('h3').textContent;
-                const postContent = postElement.querySelector('.post-content').textContent.replace('...', '');
-                
-                setupEditModal(postId, postTitle, postContent);
-            });
-        });
-        
-        // Delete buttons
-        const deleteButtons = document.querySelectorAll('.delete-post');
-        deleteButtons.forEach(button => {
-            button.addEventListener('click', function(e) {
-                e.preventDefault();
-                e.stopPropagation(); // Prevent navigation to detail page
-                
-                const postId = this.getAttribute('data-id');
-                document.getElementById('delete-form').action = `/complaints/${postId}`;
-                deleteModal.style.display = 'block';
-            });
-        });
-    }
-    
-    // Setup the edit modal with post data
-    function setupEditModal(postId, title, content) {
-        document.getElementById('edit-title').value = title;
-        document.getElementById('edit-content').value = content;
-        document.getElementById('edit-form').action = `/complaints/${postId}`;
-        
-        editModal.style.display = 'block';
-    }
-    
     // ===== DETAIL VIEW FUNCTIONALITY =====
     
     // Open detail modal for a post
@@ -410,7 +335,6 @@ document.addEventListener('DOMContentLoaded', function() {
     });
     
     // Initialize the page
-    attachEditDeleteEventListeners();
     fetchUserComplaints();
     
     // By default, apply the "recent" filter
