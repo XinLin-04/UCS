@@ -665,3 +665,10 @@ input[type="search"]::-webkit-search-results-decoration { display: none; }
     color: green; /* Green text for valid feedback */
     display: block; /* Ensure it is visible when valid */
 }
+
+.email-requirements li {
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    width: 100%; /* Adjust the width as needed */
+    display: block; /* Ensure it behaves like a block element */
+}

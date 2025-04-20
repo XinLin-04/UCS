@@ -79,3 +79,33 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 });
+
+document.addEventListener("DOMContentLoaded", () => {
+    const passwordInput = document.getElementById("password");
+    const confirmPasswordInput = document.getElementById("password-confirm");
+    const confirmPasswordFeedback = document.getElementById("confirm-password-feedback");
+    const confirmPasswordFeedbackText = document.getElementById("confirm-password-feedback-text");
+
+    if (passwordInput && confirmPasswordInput) {
+        confirmPasswordInput.addEventListener("input", () => {
+            const password = passwordInput.value;
+            const confirmPassword = confirmPasswordInput.value;
+
+            if (confirmPassword === password) {
+                confirmPasswordInput.classList.remove("is-invalid");
+                confirmPasswordInput.classList.add("valid-input");
+                confirmPasswordFeedback.classList.remove("invalid-feedback");
+                confirmPasswordFeedback.classList.add("valid-feedback");
+                confirmPasswordFeedbackText.textContent = "Passwords match!";
+                confirmPasswordFeedback.style.display = "block";
+            } else {
+                confirmPasswordInput.classList.remove("valid-input");
+                confirmPasswordInput.classList.add("is-invalid");
+                confirmPasswordFeedback.classList.remove("valid-feedback");
+                confirmPasswordFeedback.classList.add("invalid-feedback");
+                confirmPasswordFeedbackText.textContent = "Passwords do not match.";
+                confirmPasswordFeedback.style.display = "block";
+            }
+        });
+    }
+});
