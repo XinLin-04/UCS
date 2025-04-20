@@ -28,12 +28,15 @@
         </div>
         @endcan
 
+        @auth
         <div class="my-posts">
             <div class="my-posts-title">My Post</div>
             <div class="post-list" id="user-posts">
             </div>
         </div>
+        @endauth
 
+        @auth
         <div class="logout">
             <div class="icon">📤</div>
             <a href="{{ route('logout') }}"
@@ -43,6 +46,7 @@
                 @csrf
             </form>
         </div>
+        @endauth
     </div>
 
     <!-- Main Content Area -->
