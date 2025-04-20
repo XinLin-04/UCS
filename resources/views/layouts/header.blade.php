@@ -5,6 +5,8 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
+    <meta name="user-id" content="{{ Auth::check() ? Auth::id() : '' }}">
+    <meta name="user-role" content="{{ Auth::check() ? Auth::user()->role : '' }}">
     <title>UTAR Complainsion</title>
 
     <title>{{ config('app.name', 'Laravel') }}</title>
@@ -49,14 +51,14 @@
                 </div>
                 <!-- Show Search Icon -->
                 <div class="searchContainer">
-                    <form action="" class="search" id="search-bar">
-                        <input type="search" placeholder="Enter to Search" class="search__input" id="search">
+                    <form action="javascript:void(0);" class="search" id="search-bar">
+                        <input type="search" name="query" placeholder="Enter to Search" class="search__input"
+                            id="search" required>
                         <div class="search__button" id="search-button">
                             <i class='bx bx-search'></i>
                             <i class='bx bx-x'></i>
                         </div>
                     </form>
-                    <div id="search_result"></div> <!-- Moved outside the form -->
                 </div>
             </div>
         </nav>
