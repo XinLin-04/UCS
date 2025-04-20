@@ -56,7 +56,6 @@
                             <i class='bx bx-x'></i>
                         </div>
                     </form>
-                    <div id="search_result"></div> <!-- Moved outside the form -->
                 </div>
             </div>
         </nav>
