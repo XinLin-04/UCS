@@ -672,3 +672,10 @@ input[type="search"]::-webkit-search-results-decoration { display: none; }
     width: 100%; /* Adjust the width as needed */
     display: block; /* Ensure it behaves like a block element */
 }
+
+.alert-success-homePage {
+    position: absolute;
+    top: 3rem;
+    left: 50%;
+    z-index: 999;
+  }

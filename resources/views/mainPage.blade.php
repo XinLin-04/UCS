@@ -1,7 +1,7 @@
 @extends('layouts.header')
 @section('content')
     @if (session('success'))
-    <div class="alert alert-success">
+    <div class="alert alert-success alert-success-homePage">
         {{ session('success') }}
     </div>
     @endif
