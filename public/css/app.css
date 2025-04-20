@@ -737,13 +737,13 @@ progress {
 .container-lg,
 .container-md,
 .container-sm {
-  --bs-gutter-x: 1.5rem;
+  --bs-gutter-x: 10rem;
   --bs-gutter-y: 0;
   width: 100%;
+  height: 100%; 
   padding-right: calc(var(--bs-gutter-x) * 0.5);
   padding-left: calc(var(--bs-gutter-x) * 0.5);
-  margin-right: auto;
-  margin-left: auto;
+  align-items: center; 
 }
 
 @media (min-width: 576px) {
@@ -3779,7 +3779,7 @@ textarea.form-control-lg {
   --bs-nav-link-disabled-color: var(--bs-secondary-color);
   display: flex;
   flex-wrap: wrap;
-  padding-left: 0;
+  padding: 0;
   margin-bottom: 0;
   list-style: none;
 }
@@ -3907,13 +3907,13 @@ textarea.form-control-lg {
 
 .navbar {
   --bs-navbar-padding-x: 0;
-  --bs-navbar-padding-y: 0.5rem;
+  --bs-navbar-padding-y: 0.25%;
   --bs-navbar-color: rgba(var(--bs-emphasis-color-rgb), 0.65);
   --bs-navbar-hover-color: rgba(var(--bs-emphasis-color-rgb), 0.8);
   --bs-navbar-disabled-color: rgba(var(--bs-emphasis-color-rgb), 0.3);
   --bs-navbar-active-color: rgba(var(--bs-emphasis-color-rgb), 1);
   --bs-navbar-brand-padding-y: 0.32rem;
-  --bs-navbar-brand-margin-end: 1rem;
+  --bs-navbar-brand-margin-end:0;
   --bs-navbar-brand-font-size: 1.125rem;
   --bs-navbar-brand-color: rgba(var(--bs-emphasis-color-rgb), 1);
   --bs-navbar-brand-hover-color: rgba(var(--bs-emphasis-color-rgb), 1);
@@ -3929,9 +3929,9 @@ textarea.form-control-lg {
   position: relative;
   display: flex;
   flex-wrap: wrap;
-  align-items: center;
-  justify-content: space-between;
   padding: var(--bs-navbar-padding-y) var(--bs-navbar-padding-x);
+  flex-direction: row;
+  padding: 0.25% 5%;
 }
 .navbar > .container,
 .navbar > .container-fluid,
@@ -3953,6 +3953,9 @@ textarea.form-control-lg {
   color: var(--bs-navbar-brand-color);
   text-decoration: none;
   white-space: nowrap;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
 }
 .navbar-brand:hover, .navbar-brand:focus {
   color: var(--bs-navbar-brand-hover-color);
@@ -4819,7 +4822,7 @@ textarea.form-control-lg {
   --bs-alert-border: var(--bs-border-width) solid var(--bs-alert-border-color);
   --bs-alert-border-radius: var(--bs-border-radius);
   --bs-alert-link-color: inherit;
-  position: relative;
+  position:relative;
   padding: var(--bs-alert-padding-y) var(--bs-alert-padding-x);
   margin-bottom: var(--bs-alert-margin-bottom);
   color: var(--bs-alert-color);
@@ -4867,6 +4870,10 @@ textarea.form-control-lg {
   --bs-alert-bg: var(--bs-success-bg-subtle);
   --bs-alert-border-color: var(--bs-success-border-subtle);
   --bs-alert-link-color: var(--bs-success-text-emphasis);
+  position: absolute;
+  top: 3rem;
+  left: 50%;
+  z-index: 999;
 }
 
 .alert-info {
