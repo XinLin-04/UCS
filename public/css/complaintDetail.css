@@ -4,6 +4,7 @@
     width: 80%;
     margin: 0 auto;
     padding-top: 20px;
+    overflow-x: hidden; /* Prevent horizontal overflow */
 }
 
 .back-navigation {

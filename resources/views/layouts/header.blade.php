@@ -27,6 +27,8 @@
     <link href="{{ asset('css/mainPage.css') }}" rel="stylesheet">
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
 
+    <!-- Page-specific styles -->
+    @yield('head')
 </head>
 
 <body>
@@ -65,6 +67,9 @@
             @yield('content')
         </main>
     </div>
+
+    <!-- Page-specific scripts -->
+    @yield('scripts')
 </body>
 
 </html>
