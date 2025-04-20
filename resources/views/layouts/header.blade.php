@@ -27,6 +27,7 @@
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     <link href="{{ asset('css/mainPage.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/complaintDetail.css') }}" rel="stylesheet">
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
 
 </head>
@@ -43,9 +44,6 @@
                         </div>
                         <div class="site-title">
                             {{ config('app.name', 'Laravel') }}
-                            {{-- <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
-                            <span class="navbar-toggler-icon"></span>
-                        </button> --}}
                         </div>
                     </a>
                 </div>

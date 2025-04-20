@@ -106,9 +106,5 @@
         </div>
     </div>
 @endsection
-@section('scripts')
-    <script src="{{ asset('js/app.js') }}"></script>
-    <script src="{{ asset('js/complaint.js') }}"></script>
-@endsection
 </body>
 </html>
