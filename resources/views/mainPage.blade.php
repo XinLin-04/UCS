@@ -11,8 +11,7 @@
         <div class="sidebar">
             <div class="user-profile">
                 @auth
-                    <div class="avatar"></div>
-                    <div class="username" data-user-id="{{ Auth::id() }}" data-role="{{ Auth::user()->role }}">{{ Auth::user()->name }}</div>
+                <div class="avatar" style="background-image: url('{{ asset('/images/tungtungtungsahur.jpg') }}');"></div>                    <div class="username" data-user-id="{{ Auth::id() }}" data-role="{{ Auth::user()->role }}">{{ Auth::user()->name }}</div>
                 @else
                     <div class="login-register">
                         <a href="{{ route('login') }}" class="login-btn">Login</a>

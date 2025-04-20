@@ -104,11 +104,9 @@ main{
     width: 60px;
     height: 60px;
     border-radius: 50%;
-    background-color: #f5a742;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-right: 15px;
+    background-size: cover;
+    background-position: center;
+    margin-right: 2%;
 }
 
 .username {
