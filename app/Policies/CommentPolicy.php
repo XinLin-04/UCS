@@ -29,7 +29,7 @@ class CommentPolicy
      */
     public function view(User $user, Comment $comment)
     {
-        return $user->id === $comment->user_id || $user->role === 'admin';
+        return true;
     }
 
     /**

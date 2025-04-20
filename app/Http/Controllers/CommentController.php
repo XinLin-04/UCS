@@ -11,7 +11,7 @@ class CommentController extends Controller
 {
     /**
      * Display a listing of comments for a specific complaint.
-     */
+     */ 
     public function index(Complaint $complaint)
     {
         $comments = $complaint->comments()
@@ -22,6 +22,8 @@ class CommentController extends Controller
         return response()->json($comments);
     }
 
+
+    //Not make sure need to use or not 
     /**
      * Store a newly created comment (API version).
      */

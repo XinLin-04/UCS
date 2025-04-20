@@ -26,8 +26,6 @@
             <div class="icon">➕</div>
             <div class="text">New Post</div>
         </div>
-        @endcan
-
         @auth
         <div class="my-posts">
             <div class="my-posts-title">My Post</div>
@@ -35,6 +33,7 @@
             </div>
         </div>
         @endauth
+        @endcan
 
         @auth
         <div class="logout">

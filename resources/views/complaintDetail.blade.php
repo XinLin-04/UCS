@@ -77,9 +77,25 @@
                         <span class="comment-author">{{ $comment->user->name }}</span>
                         <span class="comment-date">{{ $comment->created_at->diffForHumans() }}</span>
                     </div>
-                    <div class="comment-text">
+                    <div class="comment-text" id="comment-text-{{ $comment->id }}">
                         {{ $comment->content }}
                     </div>
+
+                    @auth
+                    <div class="comment-actions">
+                        @can('update', $comment)
+                        <button class="edit-comment-btn" data-id="{{ $comment->id }}">Edit</button>
+                        @endcan
+
+                        @can('delete', $comment)
+                        <form method="POST" action="{{ route('comments.destroy', $comment->id) }}" class="inline-form">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="delete-comment-btn">Delete</button>
+                        </form>
+                        @endcan
+                    </div>
+                    @endauth
                 </div>
                 @endforeach
                 @else
