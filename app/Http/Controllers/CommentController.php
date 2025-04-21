@@ -24,27 +24,6 @@ class CommentController extends Controller
         return response()->json($comments);
     }
 
-
-    /**
-     * Store a newly created comment (API version).
-     */
-    public function storeApi(Request $request, Complaint $complaint)
-    {
-        $this->authorize('create', Comment::class); 
-
-        $request->validate([
-            'content' => 'required|string'
-        ]);
-
-        $comment = new Comment();
-        $comment->content = $request->content;
-        $comment->user_id = Auth::id();
-        $comment->complaint_id = $complaint->id;
-        $comment->save();
-
-        return response()->json($comment->load('user'), 201);
-    }
-
     /**
      * Store a newly created comment (form submission).
      */
