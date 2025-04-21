@@ -18,7 +18,7 @@
 
         <div class="complaint-meta">
             <div class="author-info">
-                <div class="author-avatar"></div>
+                <div class="author-avatar" style="background-image: url('{{ asset('/images/tungtungtungsahur.jpg') }}');"></div>
                 <div class="author-name">{{ $complaint->user->name }}</div>
             </div>
             <div class="date-info">
