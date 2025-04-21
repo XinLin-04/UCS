@@ -16,6 +16,8 @@
     <script src="{{ asset('js/session.js') }}" defer></script>
     <script src="{{ asset('js/search.js') }}" defer></script>
     <script src="{{ asset('js/complaint.js') }}" defer></script>
+    <script src="{{ asset('js/complaintDetail.js') }}" defer></script>
+    <script src="{{ asset('js/profilePicture.js') }}" defer></script>
 
 
     <!-- Fonts -->

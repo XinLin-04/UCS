@@ -1,11 +1,14 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\SearchController;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\SearchController;
 use App\Http\Controllers\ComplaintController;
 use App\Http\Controllers\CommentController;
+use App\Http\Controllers\Auth\VerificationController;
 use App\Http\Controllers\Auth\RegisterController;
+use App\Http\Controllers\UserController;
+
 
 
 /*
@@ -18,37 +21,34 @@ use App\Http\Controllers\Auth\RegisterController;
 | contains the "web" middleware group. Now create something great!
 |
 */
+
 Route::post('/search', [SearchController::class, 'search'])->name('search');
 
-Route::post('/email/resend-unverified', [App\Http\Controllers\Auth\VerificationController::class, 'resendForUnverifiedUser'])
+// Resend Email Verification (for unverified users)
+Route::post('/email/resend-unverified', [VerificationController::class, 'resendForUnverifiedUser'])
     ->name('verification.resend.unverified');
 
-// Define the search route
-Route::get('/search', [SearchController::class, 'index'])->name('search');
-
+// Authentication routes (with email verification)
 Auth::routes(['verify' => true]);
 
-Route::get('/', [App\Http\Controllers\ComplaintController::class, 'index'])
-    ->name('mainPage');
+// Home/Main page (open to all)
+Route::get('/', [ComplaintController::class, 'index'])->name('mainPage');
 
-// Route::middleware(['auth', 'verified'])->group(function () {
-//     // Verified-only routes here
-// });
-
-// Complaint routes with appropriate middleware
-// Route::post('/complaints', [ComplaintController::class, 'store'])->middleware('auth')->name('complaints.store');
-// Route::get('/complaints', [ComplaintController::class, 'index'])->name('complaints.index');
-// Route::put('/complaints/{complaint}', [ComplaintController::class, 'update'])->middleware('auth')->name('complaints.update');
-// Route::delete('/complaints/{complaint}', [ComplaintController::class, 'destroy'])->middleware('auth')->name('complaints.destroy');
-
-Route::post('/complaints', [ComplaintController::class, 'store'])->name('complaints.store');
+// Complaint Routes
 Route::get('/complaints', [ComplaintController::class, 'index'])->name('complaints.index');
-Route::get('/complaints/{complaint}', [ComplaintController::class, 'show'])->name('complaints.show');
-Route::put('/complaints/{complaint}', [ComplaintController::class, 'update'])->middleware('auth')->name('complaints.update');
-Route::delete('/complaints/{complaint}', [ComplaintController::class, 'destroy'])->middleware('auth')->name('complaints.destroy');
+Route::get('/complaints/{complaint}', [ComplaintController::class, 'show'])->name('complaints.show'); // All can view
 
-// Comment routes with middleware
-Route::post('/comments', [CommentController::class, 'store'])->middleware('auth')->name('comments.store');
-Route::put('/comments/{comment}', [CommentController::class, 'update'])->middleware('auth')->name('comments.update');
-Route::delete('/comments/{comment}', [CommentController::class, 'destroy'])->middleware('auth')->name('comments.destroy');
-Route::middleware('auth')->get('/user/posts', [ComplaintController::class, 'userComplaints'])->name('user.posts');
+// Only authenticated users can create/update/delete
+Route::middleware('auth')->group(function () {
+    Route::post('/complaints', [ComplaintController::class, 'store'])->name('complaints.store');
+    Route::put('/complaints/{complaint}', [ComplaintController::class, 'update'])->name('complaints.update');
+    Route::delete('/complaints/{complaint}', [ComplaintController::class, 'destroy'])->name('complaints.destroy');
+
+    // Comment Routes
+    Route::post('/comments', [CommentController::class, 'store'])->name('comments.store');
+    Route::put('/comments/{comment}', [CommentController::class, 'update'])->name('comments.update');
+    Route::delete('/comments/{comment}', [CommentController::class, 'destroy'])->name('comments.destroy');
+
+    // Get current user's posts
+    Route::get('/user/posts', [ComplaintController::class, 'userComplaints'])->name('user.posts');
+});

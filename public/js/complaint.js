@@ -129,7 +129,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json',
                 'X-Requested-With': 'XMLHttpRequest',
-                'X-CSRF-TOKEN': csrfToken
+                'X-CSRF-Token': csrfToken,
             }
         })
         .then(response => {

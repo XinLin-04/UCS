@@ -15,7 +15,7 @@ class CommentPolicy
      * @param  \App\Models\User  $user
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function viewAny()
+    public function viewAny(User $user = null) // Allow a null entity (guests)for public access
     {
         return true;
     }
@@ -27,9 +27,9 @@ class CommentPolicy
      * @param  \App\Models\Comment  $comment
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function view(User $user, Comment $comment)
+    public function view(User $user = null, Comment $comment) // Allow a null entity (guests) for public access
     {
-        return $user->id === $comment->user_id;
+        return true;
     }
 
     /**
@@ -40,7 +40,7 @@ class CommentPolicy
      */
     public function create(User $user)
     {
-        return $user->role === 'user';
+        return $user->role === 'user'; // Only users can create comments
     }
 
     /**
@@ -52,7 +52,7 @@ class CommentPolicy
      */
     public function update(User $user, Comment $comment)
     {
-        return $user->role == "admin" || $user->id === $comment->user_id;
+        return $user->id === $comment->user_id || $user->role == "admin" ; //Only the owner or admin can edit the comment
     }
 
     /**
@@ -64,6 +64,6 @@ class CommentPolicy
      */
     public function delete(User $user, Comment $comment)
     {
-        return $user->role == "admin" || $user->id === $comment->user_id;
+        return $user->id === $comment->user_id || $user->role == "admin"; //Only the owner or admin can delete the comment
     }
 }
