@@ -1,9 +1,9 @@
 <?php
-
 namespace App\Exceptions;
 
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Throwable;
+use Illuminate\Http\Exceptions\PostTooLargeException;
 
 class Handler extends ExceptionHandler
 {
@@ -38,4 +38,17 @@ class Handler extends ExceptionHandler
             //
         });
     }
+
+    public function render($request, Throwable $exception)
+{
+    if ($exception instanceof PostTooLargeException) {
+        // Redirect back with an error message
+        return redirect()->back()->withErrors([
+            'profile_picture' => 'The uploaded file is too large. Maximum size is 3 MB.',
+        ]);
+    }
+
+    return parent::render($request, $exception);
+}
+    
 }

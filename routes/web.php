@@ -6,10 +6,24 @@ use App\Http\Controllers\SearchController;
 use App\Http\Controllers\ComplaintController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\Auth\VerificationController;
+use App\Http\Controllers\Auth\RegisterController;
+use App\Http\Controllers\UserController;
 
-// Search
-Route::get('/search', [SearchController::class, 'index'])->name('search');
-Route::post('/search', [SearchController::class, 'search'])->name('search.post');
+
+
+/*
+|--------------------------------------------------------------------------
+| Web Routes
+|--------------------------------------------------------------------------
+|
+| Here is where you can register web routes for your application. These
+| routes are loaded by the RouteServiceProvider within a group which
+| contains the "web" middleware group. Now create something great!
+|
+*/
+Route::post('/profile/update', [UserController::class, 'updateProfilePicture'])->name('profile.update');
+
+Route::post('/search', [SearchController::class, 'search'])->name('search');
 
 // Resend Email Verification (for unverified users)
 Route::post('/email/resend-unverified', [VerificationController::class, 'resendForUnverifiedUser'])
@@ -22,7 +36,7 @@ Auth::routes(['verify' => true]);
 Route::get('/', [ComplaintController::class, 'index'])->name('mainPage');
 
 // Complaint Routes
-Route::get('/complaints', [ComplaintController::class, 'index'])->name('complaints.index'); // All can view
+Route::get('/complaints', [ComplaintController::class, 'index'])->name('complaints.index');
 Route::get('/complaints/{complaint}', [ComplaintController::class, 'show'])->name('complaints.show'); // All can view
 
 // Only authenticated users can create/update/delete

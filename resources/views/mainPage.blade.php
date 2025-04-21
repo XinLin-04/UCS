@@ -81,31 +81,31 @@
     </div>
 </div>
 
-<!-- Complaint Form Modal -->
-<div id="complaint-modal" class="modal">
-    <div class="modal-content">
-        <span class="close">&times;</span>
-        <h2>Create New Complaint</h2>
-
-        <form id="complaint-form" method="POST" action="{{ route('complaints.store') }}">
-            @csrf
-            <div class="form-group">
-                <label for="title">Title</label>
-                <input type="text" id="title" name="title" value="{{ old('title') }}" required>
+    <!-- Complaint Form Modal -->
+    <div id="complaint-modal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Create New Complaint</h2>
+            
+            <form id="complaint-form" method="POST" action="{{ route('complaints.store') }}">
+                @csrf
+                <div class="form-group">
+                    <label for="title">Title</label>
+                    <input type="text" id="title" name="title" required>
                 </div>
-
-            <div class="form-group">
-                <label for="content">Content</label>
-                <textarea id="content" name="content" rows="6" required>{{ old('content') }}</textarea>
+                
+                <div class="form-group">
+                    <label for="content">Content</label>
+                    <textarea id="content" name="content" rows="6" required></textarea>
                 </div>
-
-            <div class="form-actions">
-                <button type="button" id="cancel-complaint">Cancel</button>
-                <button type="submit">Submit Complaint</button>
-            </div>
-        </form>
+                
+                <div class="form-actions">
+                    <button type="button" id="cancel-complaint">Cancel</button>
+                    <button type="submit">Submit Complaint</button>
+                </div>
+            </form>
+        </div>
     </div>
-</div>
 @endsection
 </body>
 
