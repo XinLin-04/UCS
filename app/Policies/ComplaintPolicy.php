@@ -15,7 +15,7 @@ class ComplaintPolicy
      * @param  \App\Models\User  $user
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function viewAny(User $user = null) // Allow a null entity for public access
+    public function viewAny(User $user = null) // Allow a null entity (guests) for public access
     {
         return true;
     }
@@ -27,7 +27,7 @@ class ComplaintPolicy
      * @param  \App\Models\Complaint  $complaint
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function view(User $user = null, Complaint $complaint)
+    public function view(User $user = null, Complaint $complaint) // Allow a null entity (guests) for public access
     {
         return true;
     }
@@ -40,7 +40,7 @@ class ComplaintPolicy
      */
     public function create(User $user)
     {
-        return $user->role === 'user';
+        return $user->role === 'user'; // Only users can create complaints
     }
 
     /**
@@ -52,7 +52,7 @@ class ComplaintPolicy
      */
     public function update(User $user, Complaint $complaint)
     {
-        return $user->id === $complaint->user_id || $user->role == "admin" ;
+        return $user->id === $complaint->user_id || $user->role == "admin" ; // Only the owner or admin can edit the complaint
     }
 
     /**
@@ -64,6 +64,6 @@ class ComplaintPolicy
      */
     public function delete(User $user, Complaint $complaint)
     {
-        return $user->id === $complaint->user_id || $user->role == "admin" ;
+        return $user->id === $complaint->user_id || $user->role == "admin" ; // Only the owner or admin can delete the complaint
     }
 }
