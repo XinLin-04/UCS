@@ -36,7 +36,7 @@ Auth::routes(['verify' => true]);
 Route::get('/', [ComplaintController::class, 'index'])->name('mainPage');
 
 // Complaint Routes
-Route::get('/complaints', [ComplaintController::class, 'index'])->name('complaints.index'); // All can view
+Route::get('/complaints', [ComplaintController::class, 'index'])->name('complaints.index');
 Route::get('/complaints/{complaint}', [ComplaintController::class, 'show'])->name('complaints.show'); // All can view
 
 // Only authenticated users can create/update/delete
