@@ -25,7 +25,7 @@ class CommentController extends Controller
     }
 
     /**
-     * Store a newly created comment (form submission).
+     * Store a newly created comment.
      */
     public function store(Request $request)
     {   
