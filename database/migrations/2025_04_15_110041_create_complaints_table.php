@@ -17,7 +17,6 @@ class CreateComplaintsTable extends Migration
             $table->id();
             $table->string('title');
             $table->text('content');
-            $table->string('content_image')->nullable(); // Optional field for image attachment
             $table->timestamps();
             $table->foreignId('user_id');
         });
