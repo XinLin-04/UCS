@@ -14,7 +14,8 @@ class CommentController extends Controller
      */ 
     public function index(Complaint $complaint)
     {
-        $this->authorize('viewAny', Comment::class); // Check if the user can view any comments
+        $this->authorize('viewAny', Comment::class); 
+
         $comments = $complaint->comments()
             ->with('user')
             ->latest()
@@ -30,7 +31,8 @@ class CommentController extends Controller
      */
     public function storeApi(Request $request, Complaint $complaint)
     {
-        $this->authorize('create', Comment::class); // 
+        $this->authorize('create', Comment::class); 
+
         $request->validate([
             'content' => 'required|string'
         ]);
@@ -50,6 +52,7 @@ class CommentController extends Controller
     public function store(Request $request)
     {   
         $this->authorize('create', Comment::class); 
+
         $request->validate([
             'complaint_id' => 'required|exists:complaints,id',
             'content' => 'required|string'
@@ -93,6 +96,7 @@ class CommentController extends Controller
     public function destroy(Comment $comment)
     {
         $this->authorize('delete', $comment);
+        
         $complaintId = $comment->complaint_id;
         $comment->delete();
 

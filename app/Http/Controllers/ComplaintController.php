@@ -16,7 +16,8 @@ class ComplaintController extends Controller
      */
     public function index()
     {
-        $this->authorize('viewAny', Complaint::class); // Check if the user has permission to view complaints
+        $this->authorize('viewAny', Complaint::class);
+
         $complaints = Complaint::with('user')
             ->withCount('comments')
             ->latest()
@@ -30,7 +31,8 @@ class ComplaintController extends Controller
      */
     public function show(Complaint $complaint)
     {
-        $this->authorize('view', $complaint); // Check if the user has permission to view the complaint
+        $this->authorize('view', $complaint);
+
         $complaint->load('user');
         $comments = $complaint->comments()
             ->with('user')
@@ -40,7 +42,7 @@ class ComplaintController extends Controller
         return view('complaintDetail', compact('complaint', 'comments'));
     }
 
-        /**
+    /**
      * Store a newly created complaint.
      */
     public function store(Request $request)
@@ -87,7 +89,8 @@ class ComplaintController extends Controller
      */
     public function destroy(Request $request, Complaint $complaint)
     {
-        $this->authorize('delete', $complaint); 
+        $this->authorize('delete', $complaint);
+
         $complaint->delete();
 
         return redirect()->route('complaints.index')
@@ -100,6 +103,7 @@ class ComplaintController extends Controller
     public function getFiltered(Request $request)
     {
         $this->authorize('viewAny', Complaint::class);
+
         $filter = $request->query('filter', 'recent');
         $query = Complaint::with('user')->withCount('comments');
 
@@ -138,6 +142,8 @@ class ComplaintController extends Controller
      */
     public function getComplaint(Complaint $complaint)
     {
+        $this->authorize('view', $complaint);
+
         $complaint->load('user');
         return response()->json($complaint);
     }
@@ -147,7 +153,8 @@ class ComplaintController extends Controller
      */
     public function userComplaints()
     {
-        $this->authorize('viewAny', Complaint::class); 
+        $this->authorize('viewAny', Complaint::class);
+
         $complaints = Complaint::where('user_id', Auth::id())
             ->withCount('comments')
             ->orderBy('created_at', 'desc')
@@ -157,14 +164,14 @@ class ComplaintController extends Controller
     }
 
     public function apiIndex(Request $request)
-{
-    $complaints = Complaint::with('user')
-        ->withCount('comments')
-        ->latest()
-        ->get();
+    {
+        $this->authorize('viewAny', Complaint::class);
+        
+        $complaints = Complaint::with('user')
+            ->withCount('comments')
+            ->latest()
+            ->get();
 
-    return response()->json($complaints);
+        return response()->json($complaints);
+    }
 }
-}
-
-
