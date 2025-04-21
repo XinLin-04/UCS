@@ -213,6 +213,3 @@
 @section('scripts')
 <script src="{{ asset('js/complaintDetail.js') }}"></script>
 @endsection
-</body>
-
-</html>
