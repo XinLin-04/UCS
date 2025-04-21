@@ -15,7 +15,7 @@ class ComplaintPolicy
      * @param  \App\Models\User  $user
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function viewAny(User $user)
+    public function viewAny(User $user = null) // Allow a null entity for public access
     {
         return true;
     }
@@ -27,9 +27,9 @@ class ComplaintPolicy
      * @param  \App\Models\Complaint  $complaint
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function view(User $user, Complaint $complaint)
+    public function view(User $user = null, Complaint $complaint)
     {
-        return $user->id === $complaint->user_id;
+        return true;
     }
 
     /**
@@ -52,7 +52,7 @@ class ComplaintPolicy
      */
     public function update(User $user, Complaint $complaint)
     {
-        return $user->role == "admin" || $user->id === $complaint->user_id;
+        return $user->id === $complaint->user_id || $user->role == "admin" ;
     }
 
     /**
@@ -64,6 +64,6 @@ class ComplaintPolicy
      */
     public function delete(User $user, Complaint $complaint)
     {
-        return $user->role == "admin" || $user->id === $complaint->user_id;
+        return $user->id === $complaint->user_id || $user->role == "admin" ;
     }
 }

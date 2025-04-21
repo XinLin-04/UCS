@@ -15,7 +15,7 @@ class CommentPolicy
      * @param  \App\Models\User  $user
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function viewAny()
+    public function viewAny(User $user = null) // Allow a null entity for public access
     {
         return true;
     }
@@ -27,9 +27,9 @@ class CommentPolicy
      * @param  \App\Models\Comment  $comment
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function view(User $user, Comment $comment)
+    public function view(User $user = null, Comment $comment)
     {
-        return $user->id === $comment->user_id;
+        return true;
     }
 
     /**
@@ -52,7 +52,7 @@ class CommentPolicy
      */
     public function update(User $user, Comment $comment)
     {
-        return $user->role == "admin" || $user->id === $comment->user_id;
+        return $user->id === $comment->user_id || $user->role == "admin" ;
     }
 
     /**
@@ -64,6 +64,6 @@ class CommentPolicy
      */
     public function delete(User $user, Comment $comment)
     {
-        return $user->role == "admin" || $user->id === $comment->user_id;
+        return $user->id === $comment->user_id || $user->role == "admin";
     }
 }
