@@ -21,7 +21,6 @@ use App\Http\Controllers\UserController;
 | contains the "web" middleware group. Now create something great!
 |
 */
-Route::post('/profile/update', [UserController::class, 'updateProfilePicture'])->name('profile.update');
 
 Route::post('/search', [SearchController::class, 'search'])->name('search');
 
