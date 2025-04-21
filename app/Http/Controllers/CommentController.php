@@ -25,7 +25,6 @@ class CommentController extends Controller
     }
 
 
-    //Not make sure need to use or not 
     /**
      * Store a newly created comment (API version).
      */
